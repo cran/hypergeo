@@ -1,0 +1,19 @@
+f15.3.1                 Hypergeometric function using Euler's integral
+                        representation
+f15.3.10                Transformations of the hypergeometric function
+f15.3.3                 Various transformation formulae for the
+                        hypergeometric function
+genhypergeo             The generalized hypergeometric function
+hypergeo                The hypergeometric function
+hypergeo-package        The hypergeometric function
+hypergeo_A_nonpos_int   Hypergeometric functions for integer arguments
+hypergeo_contfrac       Continued fraction expansion of the
+                        hypergeometric function
+hypergeo_cover1         Hypergeometric functions for special values of
+                        the parameters
+hypergeo_powerseries    The hypergeometric function as determined by
+                        power series
+i15.3.6                 Helper functions
+is.nonpos               Various utilities
+wolfram                 Various functions taken from Wolfram Functions
+                        Site

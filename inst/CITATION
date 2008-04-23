@@ -1,0 +1,30 @@
+citHeader("To cite in publications use:")
+
+citEntry(entry = "Article",
+	 title = {
+             paste("A new family of non-negative distributions.")
+	     },
+	 author = personList(
+         person(first = "R.",
+		middle = "K. S.",
+		last = "Hankin",
+		email="r.hankin@noc.soton.ac.uk"),
+	 person(first = "A.",
+	 	last = "Lee",
+		email = "lee@stat.auckland.ac.nz")
+		),
+	 journal = "Australia and New Zealand Journal of Statistics",
+         year = "2006",
+	 volume = "48",
+	 issue = "1",
+	 pages = "67-78",
+	 textVersion = {
+             paste("R. K. S. Hankin and A. Lee",
+                   "2006.",
+                   "A new family of non-negative distributions",
+	     	   "Australia and New Zealand Journal of Statistics",
+		   "48(1):67-78"
+		   )
+         })
+
+
