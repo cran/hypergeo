@@ -15,5 +15,5 @@ hypergeo_powerseries    The hypergeometric function as determined by
                         power series
 i15.3.6                 Helper functions
 is.nonpos               Various utilities
-wolfram                 Various functions taken from Wolfram Functions
-                        Site
+wolfram                 Various functions taken from the Wolfram
+                        Functions Site

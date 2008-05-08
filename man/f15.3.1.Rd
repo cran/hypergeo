@@ -36,7 +36,6 @@ f15.3.1(A, B, C, z, h = 0)
 
 The Mellin-Barnes form is not yet coded up.
 
-
 }
 \seealso{\code{\link{hypergeo}}}
 \examples{

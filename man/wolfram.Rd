@@ -10,9 +10,9 @@
 \alias{w07.23.06.0031.01}
 \alias{w07.23.06.0031.01_bit1}
 \alias{w07.23.06.0031.01_bit2}
-\title{Various functions taken from Wolfram Functions Site}
+\title{Various functions taken from the Wolfram Functions Site}
 \description{
-  Various functions taken from Wolfram Functions Site
+  Various functions taken from the Wolfram Functions Site
 }
 \usage{
 w07.23.06.0026.01(A, n, m, z, tol = 0, maxiter = 2000, method = "a")
@@ -80,7 +80,5 @@ jjM <- 0.33186808222278923715e-1 - 0.40188208572232037363e-1i
 jjR <- w07.23.06.0031.01(6.7,2,1,2+1i)
 # [In practice, one would type 'hypergeo(6.7, 8.7, 7.7, 2+1i)']
 stopifnot(Mod(jjM - jjR) < 1e-10)
-
-
 }
 \keyword{math}

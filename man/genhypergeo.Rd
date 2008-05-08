@@ -44,7 +44,6 @@ genhypergeo_contfrac(U, L, z, tol = 0, maxiter = 2000)
   the (apparently rare---but see the examples section) cases where
   continued fractions are used.
 
-
   The generalized hypergeometric function [here \code{genhypergeo()}]
   appears from time to time in the literature (eg Mathematica) as
   
@@ -71,10 +70,10 @@ genhypergeo_contfrac(U, L, z, tol = 0, maxiter = 2000)
 }
 \author{Robin K. S. Hankin}
 \note{
-  The radius of convergence for the series is 1 but analytic
-  continuation defines a function over the whole complex plane (possibly
-  cut along \eqn{(0,\infty)}{(0,inf)}).  Further work would be required
-  to implement this.
+  The radius of convergence for the series is 1 but under some
+  circumstances, analytic continuation defines a function over the whole
+  complex plane (possibly cut along \eqn{(0,\infty)}{(0,inf)}).  Further
+  work would be required to implement this.
 }
 \seealso{\code{\link{hypergeo}},\code{\link{genhypergeo_contfrac}}}
 \examples{
