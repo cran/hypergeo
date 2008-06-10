@@ -352,7 +352,7 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   
   things <- Mod(cbind("z" = z, "z/(z-1)" = z/(z-1), "1-z"=1-z, "1/z"=1/z,"1/(1-z)"=1/(1-z),"1-1/z"=1-1/z))
 
-  if(any(  apply(things,1,min) > 1 )){
+  if(any(  apply(things,1,min, na.rm=TRUE) > 1 )    ){  # Thanks to Igor Kojanov for fixing this
     stop("odd: none of the transformations take the argument inside the unit disk.  This cannot happen unless: (i) the Universe is a giant malevolent simulation, Matrix-style; or (ii) there is a mistake in the coding somewhere.  Contact the package maintainer")
   }
 
@@ -408,8 +408,8 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
                       "1-1/z"   = 1-1/z     # 6
                       ))
 
-  if(any(apply(things,1,min))>1){
-    stop("odd: none of the transformations take the argument inside the unit disk.  This cannot happen unless: (i) the Universe is a giant malevolent simulation, Matrix-style; or (ii) there is a mistake in the coding somewhere.  Contact the package maintainer")
+  if(any(apply(things,1,min, na.rm=TRUE)>1)){
+    stop("odd: none of the transformations take the argument inside the unit disk.   Contact the package maintainer")
   }
 
   ## Now to discourage bad ones:
@@ -465,8 +465,8 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
                       "1/(1-z)" = 1/(1-z),  # 5
                       "1-1/z"   = 1-1/z))   # 6
 
-  if(any(apply(things,1,min))>1){
-    stop("odd: none of the transformations take the argument inside the unit disk.  This cannot happen unless: (i) the Universe is a giant malevolent simulation, Matrix-style; or (ii) there is a mistake in the coding somewhere.  Contact the package maintainer")
+  if(any(apply(things,1,min,na.rm=TRUE)>1)){
+    stop("odd: none of the transformations take the argument inside the unit disk.    Contact the package maintainer")
   }
 
 
@@ -516,8 +516,8 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
                       )
                 )
 
-  if(any(apply(things,1,min))>1){
-    stop("odd: none of the transformations take the argument inside the unit disk.  This cannot happen unless: (i) the Universe is a giant malevolent simulation, Matrix-style; or (ii) there is a mistake in the coding somewhere.  Contact the package maintainer")
+  if(any(apply(things,1,min,na.rm=TRUE)>1)){
+    stop("odd: none of the transformations take the argument inside the unit disk.  Contact the package maintainer")
   }
   
   choice <- apply(things,1,which.min)

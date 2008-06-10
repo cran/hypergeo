@@ -17,7 +17,9 @@ hypergeo_AorB_nonpos_int(A, B, C, z, tol = 0)
 \details{
 
   The \dQuote{point} of these functions is that if A and C (or B and C)
-  are identical nonpositive integers, a warning needs to be given.
+  are identical nonpositive integers, a warning needs to be given
+  because the function is defined as the appropriate limit and one needs
+  to be sure that both A and C approach that limit at the same speed.
   
   Function \code{hypergeo_AorB_nonpos_int()} is a convenience wrapper
   for \code{hypergeo_A_nonpos_int()}.

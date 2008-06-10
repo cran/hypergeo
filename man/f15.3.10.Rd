@@ -83,7 +83,9 @@ the value of \code{m}.
 \author{Robin K. S. Hankin}
 \note{
   These functions are not really designed to be called by the user: use
-  wrapper functions \code{hypergeo_cover[123]()} instead.
+  \code{hypergeo()} instead, or \code{hypergeo_cover[123]()} for
+  specific cases.
+
 }
 \seealso{\code{\link{hypergeo}},\code{\link{wolfram}},\code{\link{hypergeo_cover1}}}
 \examples{

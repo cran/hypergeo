@@ -5,12 +5,12 @@ f15.3.3                 Various transformation formulae for the
                         hypergeometric function
 genhypergeo             The generalized hypergeometric function
 hypergeo                The hypergeometric function
-hypergeo-package        The hypergeometric function
 hypergeo_A_nonpos_int   Hypergeometric functions for integer arguments
 hypergeo_contfrac       Continued fraction expansion of the
                         hypergeometric function
 hypergeo_cover1         Hypergeometric functions for special values of
                         the parameters
+hypergeo-package        The hypergeometric function
 hypergeo_powerseries    The hypergeometric function as determined by
                         power series
 i15.3.6                 Helper functions
