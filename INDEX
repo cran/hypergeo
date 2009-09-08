@@ -10,9 +10,9 @@ hypergeo_contfrac       Continued fraction expansion of the
                         hypergeometric function
 hypergeo_cover1         Hypergeometric functions for special values of
                         the parameters
-hypergeo-package        The hypergeometric function
 hypergeo_powerseries    The hypergeometric function as determined by
                         power series
+hypergeo-package        The hypergeometric function
 i15.3.6                 Helper functions
 is.nonpos               Various utilities
 wolfram                 Various functions taken from the Wolfram

@@ -78,8 +78,8 @@ genhypergeo_contfrac(U, L, z, tol = 0, maxiter = 2000)
 \seealso{\code{\link{hypergeo}},\code{\link{genhypergeo_contfrac}}}
 \examples{
 
-genhypergeo(U=c(1.1,0.2,0.3), L=c(10.1,pi*4),z=1.12+0.2i)
-genhypergeo(U=c(1.1,0.2,0.3), L=c(10.1,pi*4),z=1.12+0.2i,series=FALSE)
+genhypergeo(U=c(1.1,0.2,0.3), L=c(10.1,pi*4), check_mod=FALSE, z=1.12+0.2i)
+genhypergeo(U=c(1.1,0.2,0.3), L=c(10.1,pi*4),z=4.12+0.2i,series=FALSE)
 
 }
 \keyword{math}

@@ -36,7 +36,11 @@ isgood(x, tol)
   Function \code{isgood()} uses zero as the default tolerance (argument
   \code{tol} passed in from \code{hypergeo()});
   compare the different meaning of \code{tol} used in
-  \code{is.near_integer()}  
+  \code{is.near_integer()}.
+
+  Here, \dQuote{integer} means one of the sequence
+  \eqn{0,1,2,\ldots}{1,2,...} [ie \emph{not} the Gaussian integers].
+  
 }
 \examples{
 is.zero(4)

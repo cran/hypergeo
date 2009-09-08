@@ -25,9 +25,16 @@ j15.3.9(A, B, C)
   \item{A,B,C}{Parameters of the hypergeometric function}
 }
 \details{
+
 Functions \code{i15.3.?()} return the factors at the beginning of
-equations 15.3.6-9; functions \code{j15.3.?()} check for the appropriate
-arguments of the gamma function being nonpositive integers
+equations 15.3.6-9.  These functions return zero if the denominator is
+infinite (because it includes a gamma function of a nonpositive
+integer). 
+
+
+Functions \code{j15.3.?()} check for the appropriate
+arguments of the gamma function being nonpositive integers.
+
 }
 \references{
   M. Abramowitz and I. A. Stegun 1965. \emph{Handbook of

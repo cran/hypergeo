@@ -40,7 +40,8 @@ hypergeo(A, B, C, z, tol = 0, maxiter=2000)
   page 559 fail to converge, in which case \code{hypergeo()} uses the
   continued fraction expansion \code{hypergeo_contfrac()}.
   
-
+  If this fails, the function uses integration via \code{f15.3.1()}.
+  
 }
 \references{Abramowitz and Stegun 1955.
   \emph{Handbook of mathematical functions with formulas, 
@@ -90,6 +91,11 @@ abs(g1(x+0.1i) - g2(x+0.1i))  # should have small modulus.
 
 # Just a random call, verified by Maple [ Hypergeom([],[1.22],0.9087) ]:
 genhypergeo(NULL,1.22,0.9087)
+
+
+# Little test of vectorization (warning: inefficient):
+hypergeo(A=1.2+matrix(1:10,2,5)/10, B=1.4, C=1.665, z=1+2i)
+
 
 }
 \keyword{math}

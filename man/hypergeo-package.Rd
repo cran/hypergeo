@@ -22,7 +22,7 @@ sub-functions.
 \author{
 Robin K. S. Hankin
 
-Maintainer: <r.hankin@noc.soton.ac.uk>
+Maintainer: <hankin.robin@gmail.com>
 
 }
 \references{
@@ -31,4 +31,10 @@ AnS
 \keyword{ package }
 \examples{
 hypergeo(1.1,2.3,1.9 , 1+6i)
+
+options(showHGcalls = TRUE)    # any non-null value counts as TRUE
+hypergeo(4.1, 3.1, 5.1, 1+1i)  # shows trace back
+options(showHGcalls = FALSE)   # reset
+
+
 }

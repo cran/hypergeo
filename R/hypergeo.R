@@ -36,10 +36,19 @@
 
 "i15.3.6" <- function(A,B,C){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
-  c(
-    gamma(C)*gamma(C-A-B)/(gamma(C-A)*gamma(C-B)),
-    gamma(C)*gamma(A+B-C)/(gamma(  A)*gamma(  B))
-    )
+
+  if(is.nonpos(C-A) | is.nonpos(C-B)){
+    first <- 0
+  } else {
+    first <- gamma(C)*gamma(C-A-B)/(gamma(C-A)*gamma(C-B))
+  }
+
+  if(is.nonpos(A) | is.nonpos(B)){
+    second <- 0
+  } else {
+    second <- gamma(C)*gamma(A+B-C)/(gamma(  A)*gamma(  B))
+  }
+  return(c(first, second))
 }
 
 "j15.3.6" <- function(A,B,C){
@@ -62,9 +71,19 @@
 
 "i15.3.7" <- function(A,B,C){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
-  c(gamma(C)*gamma(B-A)/(gamma(B)*gamma(C-A)),
-    gamma(C)*gamma(A-B)/(gamma(A)*gamma(C-B))
-    )
+
+  if(is.nonpos(B) | is.nonpos(C-A)){
+    first <- 0
+  } else {
+    first <- gamma(C)*gamma(B-A)/(gamma(B)*gamma(C-A))
+  }
+
+  if(is.nonpos(A)|is.nonpos(C-B)){
+    second <- 0
+  } else {
+    second <- gamma(C)*gamma(A-B)/(gamma(A)*gamma(C-B))
+  }
+  return(c(first, second))
 }
 
 "j15.3.7" <- function(A,B,C){
@@ -87,10 +106,19 @@
 
 "i15.3.8" <- function(A,B,C){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
-  c(
-    gamma(C)*gamma(B-A)/(gamma(B)*gamma(C-A)),
-    gamma(C)*gamma(A-B)/(gamma(A)*gamma(C-B))
-    )
+
+  if(is.nonpos(B) | is.nonpos(C-A)){
+    first <- 0
+  } else {
+    first <- gamma(C)*gamma(B-A)/(gamma(B)*gamma(C-A))
+  }
+
+  if(is.nonpos(A) | is.nonpos(C-B)){
+    second <- 0
+  } else { 
+    second <- gamma(C)*gamma(A-B)/(gamma(A)*gamma(C-B))
+  }
+  return(c(first, second))
 }
 
 "j15.3.8" <- function(A,B,C){
@@ -221,11 +249,11 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   if(is.null(tol)){
     tol <- 1e-11
   }
-  abs(i-round(i)) <= tol
+  abs(i-round(Re(i))) <= tol
 }
 
 "is.nonpos" <- function(i){
-  is.near_integer(i) & (i < 0.5)
+  is.near_integer(i) & (Re(i) < 0.5)
 }
 
 "is.zero" <- function(i){
@@ -269,13 +297,42 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   }
 }
 
+
+".process_args" <- function(...){  # slight modification of process.args() of package gsl...
+  a <- list(...)
+  attr <- attributes(a[[which.max(unlist(lapply(a,length)))]])
+  a <- lapply(a,as.vector)
+  out <- do.call("cbind",a)
+  
+  return(list(out=out, attr = attr))
+}
+  
 "hypergeo" <- function(A, B, C, z, tol=0, maxiter=2000){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
+  
+  if(is.complex(c(A,B,C))){
+    stop("complex values of A,B,C not supported.  If you really really want complex values, let me know")
+  } 
+  
+  if(length(A)>1 | length(B)>1 | length(C)>1){
+    jj <- .process_args(A,B,C,z)
+    f <- function(x){hypergeo(A=Re(x[1]), B=Re(x[2]),C=Re(x[3]),z=x[4],tol=tol,maxiter=maxiter)}
+    out <- apply(jj$out , 1, f)
+    attributes(out) <- jj$attr
+    return(out)
+  }
+  
   out <- hypergeo_powerseries(A=A, B=B, C=C, z=z, tol=tol, maxiter=maxiter)
   do_with_cf <- !is.na(z) & is.na(out)   # ie failures to converge; do_with_cf == "do with Continued Fraction"
   if(any(do_with_cf)){
     out[do_with_cf] <- hypergeo_contfrac(A=A, B=B, C=C, z=z[do_with_cf], maxiter=maxiter)
   }
+  do_with_integration <- !is.na(z) & is.na(out)
+  if(any(do_with_integration)){
+    g <- function(z){f15.3.1(A=A, B=B, C=C, z=z)}
+    out[do_with_integration] <- sapply(z[do_with_integration] , g)
+  }
+  
   return(out)
 }
 
@@ -311,7 +368,7 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
 
   ## So from here on, A, B, C are either non-integer, or integers >0.
 
-  if(A>B){
+  if(Re(A) > Re(B)){
     swap <- A
     A    <- B
     B    <- swap
