@@ -11,7 +11,7 @@
     if(h==0){
       return(mult * myintegrate(f,lower=0,upper=1))
     } else {
-      if(is.real(h)){
+      if(is.double(h)){
         h <- 0.5 + h*1i
       }
     }
