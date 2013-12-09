@@ -8,9 +8,10 @@
   expansion or the continued fraction expansion.
 }
 \usage{
-genhypergeo(U, L, z, tol = 0, maxiter = 2000, check_mod = TRUE, polynomial = FALSE, debug = FALSE, series = TRUE)
-genhypergeo_series(U, L, z, tol = 0, maxiter = 2000, check_mod = TRUE,
-polynomial = FALSE, debug = FALSE) 
+genhypergeo(U, L, z, tol=0, maxiter=2000, check_mod=TRUE,
+    polynomial=FALSE, debug=FALSE, series=TRUE)
+genhypergeo_series(U, L, z, tol=0, maxiter=2000, check_mod=TRUE,
+    polynomial=FALSE, debug=FALSE) 
 genhypergeo_contfrac(U, L, z, tol = 0, maxiter = 2000)
 }
 \arguments{

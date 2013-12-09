@@ -33,8 +33,8 @@ hypergeo_AorB_nonpos_int(A, B, C, z, tol = 0)
 \examples{
 
 jjR1 <- hypergeo(-4, pi, 2.2 , 1+6i)
-jjR2 <- hypergeo(pi, -4, 2.2 , 1+6i)  # Former bug
-jjM <- 3464.1890402837334002-353.94143580568566281i
+jjR2 <- hypergeo(pi, -4, 2.2 , 1+6i)  # former bug
+jjM <- 3464.1890402837334002-353.94143580568566281i  # value given by Mathematica 
 
 
 }

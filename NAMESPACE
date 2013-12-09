@@ -1,1 +1,3 @@
 exportPattern("^[^\\.]")
+importFrom(elliptic, myintegrate,integrate.segments)
+importFrom(contfrac, GCF)

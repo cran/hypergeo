@@ -19,7 +19,7 @@ hypergeo(A, B, C, z, tol = 0, maxiter=2000)
 \details{
   The hypergeometric function as defined by Abramowitz and Stegun,
   equation 15.1.1, page 556 is
-  \deqn{ {}_1F_2(a,b;c;z) =
+  \deqn{ {}_2F_1(a,b;c;z) =
     \sum_{n=0}^\infty\frac{(a)_n(b)_n}{(c)_n}\cdot\frac{z^n}{n!}}{[omitted;
     see PDF]}
   
