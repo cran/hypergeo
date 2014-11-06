@@ -112,12 +112,14 @@ f.all <- function(z){
     
 stopifnot(max(Mod(f.all(z))) < 1e-10)
 
+
+
+# Below, jjR means value obtained from R via the package, and jjM means the value given by maple.
+
 # Following test fails sometimes.  It passes on my mac, fails on the linuxbox:
-if(FALSE){
 jjR <- genhypergeo_contfrac_single(U=0.2 , L=c(9.9,2.7,8.7) , z=1+10i)
 jjM <- 1.0007289707983569879 + 0.86250714217251837317e-2i
 stopifnot(Mod(jjR-jjM)<1e-10)
-}
 
 # Test hypergeo_cover1():
 jjR <- hypergeo(pi,pi/2,3*pi/2-4, z=0.1+0.2i)  # ie negative m;  ie f15.3.12()
@@ -131,8 +133,6 @@ stopifnot(Mod(jjR-jjM)<1e-10)
 jjR <- hypergeo(pi,pi/2,3*pi/2, z=0.1+0.2i)  # m=0 (ie 15.3.10)
 jjM <- 1.0654685003741342889 +0.24452141417139649656i
 stopifnot(Mod(jjR-jjM)<1e-10)
-
-
 
 jjR <- hypergeo(pi,pi/2,3*pi/2+4, z=10.1+0.2i)  # This is positive m (15.3.11)
 jjM <- -0.29639970263878733845 - 0.34765230143995441172i
@@ -151,8 +151,6 @@ stopifnot(Mod(jjR-jjM)<1e-10)
 jjM <- -0.15888831928748121465e-5 + 0.40339599711492215912e-4i
 jjR <- hypergeo(pi,pi+2, 1.1 , 1+10i)
 stopifnot(Mod(jjR-jjM)<1e-10)
-
-
 
 
 # Test hypergeo_cover3()

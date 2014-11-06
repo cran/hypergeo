@@ -97,6 +97,12 @@ genhypergeo(NULL,1.22,0.9087)
 hypergeo(A=1.2+matrix(1:10,2,5)/10, B=1.4, C=1.665, z=1+2i)
 
 
+# following calls test for former bugs:
+hypergeo(1,2.1,4.1,1+0.1i)
+hypergeo(1.1,5,2.1,1+0.1i)
+hypergeo(1.9, 2.9, 1.9+2.9+4,1+0.99i) # c=a+b+4; hypergeo_cover1()
+
+
 }
 \keyword{math}
 

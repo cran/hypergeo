@@ -33,6 +33,10 @@ genhypergeo_contfrac_single(U, L, z, tol = 0, maxiter = 2000)
 }
 \author{Robin K. S. Hankin}
 \note{
+
+  The continued fraction expression is the RHS identity 07.23.10.0001.01 of
+  \code{Hypergeometric2F1.pdf}.
+  
   The function sometimes fails to converge to the correct value but no
   warning is given.
 

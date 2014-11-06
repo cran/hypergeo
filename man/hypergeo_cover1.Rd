@@ -40,6 +40,13 @@ hypergeo_cover3(A, n, m, z, tol = 0, maxiter = 2000, method = "a", give = FALSE)
   M. Abramowitz and I. A. Stegun 1965. \emph{Handbook of
     mathematical functions}.  New York: Dover
 }
+\note{
+  Function \code{hypergeo_cover3()} is required because the
+    \dQuote{limiting process} mentioned on p560, just after 15.3.14, is
+    not explicit.  Which is why it dispatches to
+    \code{w07.23.06.0026.01()} and \code{w07.23.06.0031.01()},
+    documented at \code{wolfram}.
+}
 \author{Robin K. S. Hankin}
 \seealso{\code{\link{hypergeo}},\code{\link{f15.3.10}},\code{\link{wolfram}}}
 \examples{

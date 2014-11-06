@@ -1,6 +1,6 @@
 "f15.1.1" <- function(A, B, C, z, tol=0, maxiter=2000){
-  if(!is.null(getOption("showHGcalls"))){print(match.call())}
-  genhypergeo(U=c(A,B), L=C, z=z, tol=tol, maxiter=maxiter)
+    if(!is.null(getOption("showHGcalls"))){print(match.call())}
+    genhypergeo(U=c(A,B), L=C, z=z, tol=tol, maxiter=maxiter)
 }
 
 "f15.3.1" <- function(A,B,C,z,h=0){
@@ -36,26 +36,17 @@
 
 "i15.3.6" <- function(A,B,C){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
-
-  if(is.nonpos(C-A) | is.nonpos(C-B)){
-    first <- 0
-  } else {
-    first <- gamma(C)*gamma(C-A-B)/(gamma(C-A)*gamma(C-B))
-  }
-
-  if(is.nonpos(A) | is.nonpos(B)){
-    second <- 0
-  } else {
-    second <- gamma(C)*gamma(A+B-C)/(gamma(  A)*gamma(  B))
-  }
-  return(c(first, second))
+  return(c(
+      ifelse(is.nonpos(C-A) | is.nonpos(C-B), 0, gamma(C)*gamma(C-A-B)/(gamma(C-A)*gamma(C-B))),
+      ifelse(is.nonpos(A  ) | is.nonpos(B  ), 0, gamma(C)*gamma(A+B-C)/(gamma(  A)*gamma(  B)))
+      ))
 }
 
 "j15.3.6" <- function(A,B,C){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
   is.nonpos(c(
-            C , C-A-B , C-A , C-B ,
-            C , A+B-C ,   A ,   B
+            C , C-A-B ,
+            C , A+B-C 
             ))
 }
 
@@ -70,27 +61,18 @@
 }
 
 "i15.3.7" <- function(A,B,C){
-  if(!is.null(getOption("showHGcalls"))){print(match.call())}
-
-  if(is.nonpos(B) | is.nonpos(C-A)){
-    first <- 0
-  } else {
-    first <- gamma(C)*gamma(B-A)/(gamma(B)*gamma(C-A))
-  }
-
-  if(is.nonpos(A)|is.nonpos(C-B)){
-    second <- 0
-  } else {
-    second <- gamma(C)*gamma(A-B)/(gamma(A)*gamma(C-B))
-  }
-  return(c(first, second))
+    if(!is.null(getOption("showHGcalls"))){print(match.call())}
+    return(c(
+        ifelse(is.nonpos(B) | is.nonpos(C-A), 0, gamma(C)*gamma(B-A)/(gamma(B)*gamma(C-A))),
+        ifelse(is.nonpos(A) | is.nonpos(C-B), 0, gamma(C)*gamma(A-B)/(gamma(A)*gamma(C-B)))
+        ))
 }
 
 "j15.3.7" <- function(A,B,C){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
   is.nonpos(c(
-            C , B-A , B , C-A , 
-            C , A-B , A , C-B
+            C , B-A,
+            C , A-B 
             ))
 }
 
@@ -106,26 +88,17 @@
 
 "i15.3.8" <- function(A,B,C){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
-
-  if(is.nonpos(B) | is.nonpos(C-A)){
-    first <- 0
-  } else {
-    first <- gamma(C)*gamma(B-A)/(gamma(B)*gamma(C-A))
-  }
-
-  if(is.nonpos(A) | is.nonpos(C-B)){
-    second <- 0
-  } else { 
-    second <- gamma(C)*gamma(A-B)/(gamma(A)*gamma(C-B))
-  }
-  return(c(first, second))
+  return(c(
+      ifelse(is.nonpos(B) | is.nonpos(C-A), 0, gamma(C)*gamma(B-A)/(gamma(B)*gamma(C-A))),
+      ifelse(is.nonpos(A) | is.nonpos(C-B), 0, gamma(C)*gamma(A-B)/(gamma(A)*gamma(C-B)))
+      ))
 }
 
 "j15.3.8" <- function(A,B,C){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
   is.nonpos(c(
-              C , B-A , B , C-A ,
-              C , A-B , A , C-B
+              C , B-A , 
+              C , A-B 
               ))
 }
 
@@ -135,8 +108,10 @@
     return(z)
   }
   jj <- i15.3.8(A,B,C)
-    jj[1] * (1-z)^(-A) * genhypergeo(U=c(A,C-B),L=A-B+1,z=1/(1-z),tol=tol,maxiter=maxiter) + 
-    jj[2] * (1-z)^(-B) * genhypergeo(U=c(B,C-A),L=B-A+1,z=1/(1-z),tol=tol,maxiter=maxiter)
+  return(
+      jj[1] * (1-z)^(-A) * genhypergeo(U=c(A,C-B),L=A-B+1,z=1/(1-z),tol=tol,maxiter=maxiter) + 
+      jj[2] * (1-z)^(-B) * genhypergeo(U=c(B,C-A),L=B-A+1,z=1/(1-z),tol=tol,maxiter=maxiter)
+      )
 }
 
 "i15.3.9" <- function(A,B,C){
@@ -150,8 +125,8 @@
 "j15.3.9" <- function(A,B,C){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
   is.nonpos(c(
-              C , C-A-B , C-A , C-B ,
-              C , A+B-C ,   A  ,  B
+              C , C-A-B , 
+              C , A+B-C 
               ))
 }              
 
@@ -161,8 +136,8 @@
     return(z)
   }
   jj <- i15.3.9(A,B,C)
-    jj[1] *               z^( -A)*genhypergeo(U=c(A,A-C+1),L=A+B-C+1,z=1-1/1/z,tol=tol,maxiter=maxiter) +
-    jj[2] * (1-z)^(C-A-B)*z^(A-C)*genhypergeo(U=c(C-A,1-A),L=C-A-B+1,z=1-1/1/z,tol=tol,maxiter=maxiter)
+    jj[1] *               z^( -A)*genhypergeo(U=c(A,A-C+1),L=A+B-C+1,z=1-1/z,tol=tol,maxiter=maxiter) +
+    jj[2] * (1-z)^(C-A-B)*z^(A-C)*genhypergeo(U=c(C-A,1-A),L=C-A-B+1,z=1-1/z,tol=tol,maxiter=maxiter)
   }
 
 "isgood" <- function(x,tol){ all(abs(x[!is.na(x)]) <= tol)}
@@ -170,7 +145,7 @@
 "genhypergeo" <- function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debug=FALSE, series=TRUE)
 {
   if(series){
-    return(genhypergeo_series(U, L, z, tol = 0, maxiter=maxiter, check_mod=check_mod, polynomial=polynomial, debug=debug))
+    return(genhypergeo_series(U, L, z, tol = tol, maxiter=maxiter, check_mod=check_mod, polynomial=polynomial, debug=debug))
   } else {
     return(genhypergeo_contfrac(U, L, z, maxiter=maxiter))
   }
@@ -225,6 +200,8 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
     temp <- series
     
     U <- U + 1
+
+      
     L <- L + 1
   }
 
@@ -306,7 +283,14 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   
   return(list(out=out, attr = attr))
 }
-  
+
+"crit" <- function(...){
+    c(
+        1/2 + 1i*sqrt(3)/2,
+        1/2 - 1i*sqrt(3)/2
+        )
+}
+   
 "hypergeo" <- function(A, B, C, z, tol=0, maxiter=2000){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
   
@@ -321,8 +305,33 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
     attributes(out) <- jj$attr
     return(out)
   }
+
+
+  # if you are here, length(A)=length(B)=length(C)=1.
+
+  jj <- crit()
+  c1 <- jj[1]
+  c2 <- jj[2]
   
-  out <- hypergeo_powerseries(A=A, B=B, C=C, z=z, tol=tol, maxiter=maxiter)
+  close_to_crit <- (abs(z-c1) < 0.1) | (abs(z-c2) < 0.1)
+
+  ## following lines commented out because ifelse() evaluates both
+  ## functions for *every* value of z, irregardless of the value of
+  ## close_to_crit.  So both hypergeo_residue_close_to_crit() *and*
+  ## hypergeo_powerseries() return errors [and there is also the risk
+  ## of an infinite regress].
+  ## out <- ifelse(close_to_crit,
+  ##              hypergeo_residue_close_to_crit_multiple(A,B,C,z, tol=tol, maxiter=maxiter),
+  ##              hypergeo_powerseries                   (A,B,C,z, tol=tol, maxiter=maxiter)
+  ##              )
+
+  out <- z*NA
+#  if(any( close_to_crit)){out[ close_to_crit] <- hypergeo_residue_close_to_crit_multiple(A,B,C,z[ close_to_crit], tol=tol, maxiter=maxiter)}
+#  if(any(!close_to_crit)){out[!close_to_crit] <- hypergeo_powerseries                   (A,B,C,z[!close_to_crit], tol=tol, maxiter=maxiter)}
+  
+  if(any( close_to_crit)){out[ close_to_crit] <- hypergeo_gosper      (A,B,C,z[ close_to_crit], tol=tol, maxiter=maxiter)}
+  if(any(!close_to_crit)){out[!close_to_crit] <- hypergeo_powerseries (A,B,C,z[!close_to_crit], tol=tol, maxiter=maxiter)}
+  
   do_with_cf <- !is.na(z) & is.na(out)   # ie failures to converge; do_with_cf == "do with Continued Fraction"
   if(any(do_with_cf)){
     out[do_with_cf] <- hypergeo_contfrac(A=A, B=B, C=C, z=z[do_with_cf], maxiter=maxiter)
@@ -338,6 +347,7 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
 
 "hypergeo_powerseries" <- function(A, B, C, z, tol=0, maxiter=2000){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
+
   z <- z+0i
 
   if(is.zero(A) | is.zero(B)){
@@ -362,8 +372,9 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
     return(hypergeo_AorB_nonpos_int(A,B,C,z,tol=tol))
   }
 
-  if(is.nonpos(C)){
-    return(genhypergeo(U=c(A,B),L=C,tol=tol,maxiter=maxiter))
+  if(is.nonpos(C)){    # C is a nonpositive integer; series not defined [unless it terminates in which case a limit is used]
+      return(z*NA)
+
   }
 
   ## So from here on, A, B, C are either non-integer, or integers >0.
@@ -376,25 +387,25 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
     
     
   m <- C-A
-  n <- B-A   #  remember   n >= 0
+  n <- B-A   #  remember: 'n' must be >= 0 because of the 'swap' above.
   
   if(is.near_integer(m)){
     if(m <= 0){
-      return( (1-z)^(C-A-B)*Recall(C-A,C-B,C,z=z,tol=tol,maxiter=maxiter) )  # Not f15.3.3() because this leads to an infinite recursion
+      return( (1-z)^(C-A-B)*Recall(C-A,C-B,C,z=z,tol=tol,maxiter=maxiter) )  # This is 15.3.3, but do not call f15.3.3(), because this leads to an infinite recursion
     } else {
-      if(is.near_integer(n)){
+      if(is.near_integer(n)){ # This means B-A and C-A are both integers; the "limiting process" on p560 [just after 15.3.4] needs hypergeo_cover3()
         return(hypergeo_cover3(A,n,m,z,tol=tol,maxiter=maxiter))
       } 
     }
   } 
   
   m <- -(A+B-C)   # Former bug!
-  if(is.near_integer(m)){
+  if(is.near_integer(m)){  # This is the "Each term of 15.3.6 has a pole..." on p559
     return(hypergeo_cover1(A,B,m,z,tol=tol,maxiter=maxiter))
   }
   
   m <- B-A
-  if(is.near_integer(m)){
+  if(is.near_integer(m)){  # This is the "Similarly each term of 15.3.7..." on p560
     return(hypergeo_cover2(A,C,m,z,tol=tol,maxiter=maxiter))
   }
   
@@ -407,13 +418,7 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   attr <- attributes(z)
   z <- as.vector(as.complex(z))
   
-  things <- Mod(cbind("z" = z, "z/(z-1)" = z/(z-1), "1-z"=1-z, "1/z"=1/z,"1/(1-z)"=1/(1-z),"1-1/z"=1-1/z))
-
-  if(any(  apply(things,1,min, na.rm=TRUE) > 1 )    ){  # Thanks to Igor Kojanov for fixing this
-    stop("odd: none of the transformations take the argument inside the unit disk.  This cannot happen unless: (i) the Universe is a giant malevolent simulation, Matrix-style; or (ii) there is a mistake in the coding somewhere.  Contact the package maintainer")
-  }
-
-  
+  things <- thingfun(z)
   choice <- apply(things,1,which.min)
   if(!is.null(getOption("showHGcalls"))){
     print("choice: ")
@@ -428,12 +433,12 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   u15.3.9 <- choice==6
 
   out <- z*NA
-  if(any(u15.1.1)){ out[u15.1.1] <- f15.1.1(A=A,B=B,C=C, z[u15.1.1], tol=tol,maxiter=maxiter) }
-  if(any(u15.3.4)){ out[u15.3.4] <- f15.3.4(A=A,B=B,C=C, z[u15.3.4], tol=tol,maxiter=maxiter) }
-  if(any(u15.3.6)){ out[u15.3.6] <- f15.3.6(A=A,B=B,C=C, z[u15.3.6], tol=tol,maxiter=maxiter) }
-  if(any(u15.3.7)){ out[u15.3.7] <- f15.3.7(A=A,B=B,C=C, z[u15.3.7], tol=tol,maxiter=maxiter) }
-  if(any(u15.3.8)){ out[u15.3.8] <- f15.3.8(A=A,B=B,C=C, z[u15.3.8], tol=tol,maxiter=maxiter) }
-  if(any(u15.3.9)){ out[u15.3.9] <- f15.3.9(A=A,B=B,C=C, z[u15.3.9], tol=tol,maxiter=maxiter) }
+  if(any(u15.1.1)){ out[u15.1.1] <- f15.1.1(A=A,B=B,C=C, z[u15.1.1], tol=tol,maxiter=maxiter) }  # 1
+  if(any(u15.3.4)){ out[u15.3.4] <- f15.3.4(A=A,B=B,C=C, z[u15.3.4], tol=tol,maxiter=maxiter) }  # 2
+  if(any(u15.3.6)){ out[u15.3.6] <- f15.3.6(A=A,B=B,C=C, z[u15.3.6], tol=tol,maxiter=maxiter) }  # 3 
+  if(any(u15.3.7)){ out[u15.3.7] <- f15.3.7(A=A,B=B,C=C, z[u15.3.7], tol=tol,maxiter=maxiter) }  # 4
+  if(any(u15.3.8)){ out[u15.3.8] <- f15.3.8(A=A,B=B,C=C, z[u15.3.8], tol=tol,maxiter=maxiter) }  # 5 
+  if(any(u15.3.9)){ out[u15.3.9] <- f15.3.9(A=A,B=B,C=C, z[u15.3.9], tol=tol,maxiter=maxiter) }  # 6
 
   attributes(out) <- attr
   if(give){
@@ -441,6 +446,25 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   } else {
     return(out)
   }
+}
+
+"thingfun" <- function(z,complex=FALSE){
+    things <- cbind("z"       = z,        # 1
+                    "z/(z-1)" = z/(z-1),  # 2
+                    "1-z"     = 1-z,      # 3
+                    "1/z"     = 1/z,      # 4
+                    "1/(1-z)" = 1/(1-z),  # 5
+                    "1-1/z"   = 1-1/z     # 6
+                    )
+
+    if(complex){return(things)}
+
+    things <- Mod(things)
+
+  if(any(apply(things,1,min, na.rm=TRUE)>1)){ # Thanks to Igor Kojanov for fixing this
+    stop("odd: none of the transformations take the argument inside the unit disk.  Contact the package maintainer")
+  }
+  return(things)
 }
 
 "hypergeo_cover1" <- function(A, B, m, z, tol=0, maxiter=2000,  method="a", give=FALSE){
@@ -457,22 +481,15 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   attr <- attributes(z)
   z <- as.vector(as.complex(z))
 
-  things <- Mod(cbind("z"       = z,        # 1
-                      "z/(z-1)" = z/(z-1),  # 2
-                      "1-z"     = 1-z,      # 3
-                      "1/z"     = 1/z,      # 4
-                      "1/(1-z)" = 1/(1-z),  # 5
-                      "1-1/z"   = 1-1/z     # 6
-                      ))
-
-  if(any(apply(things,1,min, na.rm=TRUE)>1)){
-    stop("odd: none of the transformations take the argument inside the unit disk.   Contact the package maintainer")
-  }
+  things <- thingfun(z)
 
   ## Now to discourage bad ones:
   if(any(j15.3.7(A,B,C))){ things[,4] <- Inf }
   if(any(j15.3.8(A,B,C))){ things[,5] <- Inf }
   if(any(j15.3.9(A,B,C))){ things[,6] <- Inf }
+  ## thus we take the minimum modulus of non-forbidden options.
+  ## Compare similar lines in hypergeo_cover2(): here the functions
+  ## are 7,8,9; there they are 6,8,9
   
   choice <- apply(things,1,which.min)
   u15.1.1 <- choice==1
@@ -482,7 +499,7 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   u15.3.8 <- choice==5
   u15.3.9 <- choice==6
 
-  
+
   out <- z*NA
   if(any(u15.1.1)){ out[u15.1.1] <- f15.1.1       (A=A,B=B,C=C, z[u15.1.1], tol=tol,maxiter=maxiter) }
   if(any(u15.3.4)){ out[u15.3.4] <- f15.3.4       (A=A,B=B,C=C, z[u15.3.4], tol=tol,maxiter=maxiter) }
@@ -514,31 +531,19 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   attr <- attributes(z)
   z <- as.vector(as.complex(z))
 
-  things <- Mod(cbind(
-                      "z"       = z,        # 1
-                      "z/(z-1)" = z/(z-1),  # 2
-                      "1-z"     = 1-z,      # 3
-                      "1/z"     = 1/z,      # 4
-                      "1/(1-z)" = 1/(1-z),  # 5
-                      "1-1/z"   = 1-1/z))   # 6
-
-  if(any(apply(things,1,min,na.rm=TRUE)>1)){
-    stop("odd: none of the transformations take the argument inside the unit disk.    Contact the package maintainer")
-  }
+  things <- thingfun(z)
 
 
   ## Now to discourage bad ones:
   if(any(j15.3.6(A,B,C))){ things[,3] <- Inf }
   if(any(j15.3.8(A,B,C))){ things[,5] <- Inf }
-  if(any(j15.3.9(A,B,C))){ things[,6] <- Inf }
+  if(any(j15.3.9(A,B,C))){ things[,6] <- Inf }  
   
   choice <- apply(things,1,which.min)
-
-
   u15.1.1 <- choice==1
   u15.3.4 <- choice==2
   u15.3.6 <- choice==3
-  u15.3.x <- choice==4 #  This one!
+  u15.3.x <- choice==4 #  This one!  [corresponds to u15.3.7()]
   u15.3.8 <- choice==5
   u15.3.9 <- choice==6
 
@@ -566,7 +571,8 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   
   attr <- attributes(z)
   z <- as.vector(as.complex(z))
-
+  
+  ## following is a cut-down version of thingfun(), tailored for the Wolfram functions:
   things <- Mod(cbind(
                       "z"       = z,        # 1
                       "1/z"     = 1/z       # 4
@@ -578,19 +584,19 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   }
   
   choice <- apply(things,1,which.min)
-
-
+  
+  
   u15.1.1           <- choice==1
-  w07.23.06.0026.01 <- (choice==2) & (m >  n)
-  w07.23.06.0031.01 <- (choice==2) & (m <= n)
-
+  u07.23.06.0026.01 <- (choice==2) & (m >  n)
+  u07.23.06.0031.01 <- (choice==2) & (m <= n)
+  
   out <- z*NA
   if(any(u15.1.1)){ out[u15.1.1] <- f15.1.1(A=A,B=A+n,C=A+m, z[u15.1.1], tol=tol,maxiter=maxiter) }
-  if(any(w07.23.06.0026.01)){
-    out[w07.23.06.0026.01] <- w07.23.06.0026.01(A=A,n,m, z[w07.23.06.0026.01], tol=tol, maxiter=maxiter, method=method)
+  if(any(u07.23.06.0026.01)){
+    out[u07.23.06.0026.01] <- w07.23.06.0026.01(A=A,n,m, z[u07.23.06.0026.01], tol=tol, maxiter=maxiter, method=method)
   }
-  if(any(w07.23.06.0031.01)){
-    out[w07.23.06.0031.01] <- w07.23.06.0031.01(A=A,n,m, z[w07.23.06.0031.01], tol=tol, maxiter=maxiter)
+  if(any(u07.23.06.0031.01)){
+    out[u07.23.06.0031.01] <- w07.23.06.0031.01(A=A,n,m, z[u07.23.06.0031.01], tol=tol, maxiter=maxiter)
   }
   
   attributes(out) <- attr
@@ -601,7 +607,7 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   }
 }
 
-"f15.3.10_a" <- function(A, B, z, tol=0, maxiter=2000){ #"_a" means use psigamma, "_b" means use 6.3.5.
+"f15.3.10_a" <- function(A, B, z, tol=0, maxiter=2000){ #"_a" means use psigamma, "_b" means use 6.3.5, p258
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
   U <- c(A,B)
   z[Mod(1-z) >= 1]  <- NA
@@ -623,7 +629,7 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   return(z*NA)
 }
 
-"f15.3.10_b" <- function(A, B, z, tol=0, maxiter=2000){ #"_a" means use psigamma, "_b" means use 6.3.5.
+"f15.3.10_b" <- function(A, B, z, tol=0, maxiter=2000){ #"_a" means use psigamma, "_b" means use 6.3.5, p258
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
   U <- c(A,B)
   z[Mod(1-z) >= 1]  <- NA
@@ -665,6 +671,7 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
   stopifnot(is.near_integer(m))
   stopifnot(m>0)
+  m <- round(m)
   
   U <- c(A,B)
   L <- 1-m
@@ -731,6 +738,7 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   for(n in seq_len(maxiter)){
     fac <- fac * prod(U) * (1-z)/(n*(n+m))
     pn <- pn + 1/n
+    
     pm <- pm + 1/(n+m)
     pa <- pa + 1/(A+n+m-1)
     pb <- pb + 1/(B+n+m-1)
@@ -757,6 +765,7 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
 
 "f15.3.12_bit1" <- function(A, B, m, z, tol=0){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
+  m <- round(m)
   U <- c(A-m,B-m)
   L <- 1-m
   mult <- ((gamma(m)*gamma(A+B-m))/(gamma(A)*gamma(B))) / (1-z)^m
@@ -780,6 +789,10 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
 
 "f15.3.12_bit2_a" <- function(A, B, m, z, tol=0, maxiter=2000){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
+  m <- round(m)
+  if(is.nonpos(A-m)|is.nonpos(B-m)){return(z*0)}
+  mult <- (-1)^m * gamma(A+B-m)/(gamma(A-m)*gamma(B-m))
+
   U <- c(A , B)  # sic
   z[Mod(1-z) >= 1]  <- NA
   fac <- 1/factorial(m)
@@ -791,7 +804,7 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
     series <-
       temp + fac * (l1mz - psigamma(n+1) - psigamma(n+m+1) + psigamma(A+n) + psigamma(B+n))
     if(isgood(series-temp,tol)){
-      return(  (-1)^m * gamma(A+B-m)/(gamma(A-m)*gamma(B-m)) * series)
+      return(mult * series)
     }
     temp <- series
     U <- U+1
@@ -802,6 +815,10 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
 
 "f15.3.12_bit2_b" <- function(A, B, m, z, tol=0, maxiter=2000){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
+  m <- round(m)
+  if(is.nonpos(A-m)|is.nonpos(B-m)){return(z*0)}
+  mult <- (-1)^m * gamma(A+B-m)/(gamma(A-m)*gamma(B-m))
+
   U <- c(A , B)  # sic
   z[Mod(1-z) >= 1]  <- NA
   fac <- 1/factorial(m)
@@ -820,7 +837,7 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
     series <-
       temp + fac * (l1mz - pn - pm + pa + pb)
     if(isgood(series-temp,tol)){
-      return(  (-1)^m * gamma(A+B-m)/(gamma(A-m)*gamma(B-m)) * series)
+      return(mult * series)
     }
     temp <- series
     U <- U+1
@@ -897,6 +914,7 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
 
 "f15.3.14_bit1_a" <- function(A, C, m, z, tol=0, maxiter=2000){ # "_a" means use psigamma, "_b" means use 6.3.5.
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
+  m <- round(m)
   U <- c(A+m, 1-C+A+m)
   z[Mod(z) < 1]  <- NA
   fac <-  (gamma(A+m)/gamma(A)) * (gamma(1-C+A+m)/gamma(1-C+A))  / factorial(m)
@@ -918,6 +936,7 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
 
 "f15.3.14_bit1_b" <- function(A, C, m, z, tol=0, maxiter=2000){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
+  m <- round(m)
   U <- c(A+m, 1-C+A+m)
   z[Mod(z) < 1]  <- NA
   fac <-  (gamma(A+m)/gamma(A)) * (gamma(1-C+A+m)/gamma(1-C+A))  / factorial(m)
@@ -941,12 +960,14 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
     temp <- series
     U <- U+1
   }
+
   warning("series not converged")
   return(z*NA)
 }
   
 "f15.3.14_bit2" <- function(A, C, m, z, tol=0){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
+  m <- round(m)
   stopifnot(m>0)
   stopifnot(is.near_integer(m))
   U <- c(A)
@@ -981,6 +1002,7 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
 "f15.3.10_11_12" <- function(A,B,m,z,tol=0,maxiter=2000,method="a"){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
   stopifnot(is.near_integer(m))
+  m <- round(m)
   if(is.zero(m)){
     return(f15.3.10(A,B,   z,tol=tol,maxiter=maxiter,method=method))
   } else if (m>0){
@@ -995,6 +1017,7 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
 "f15.3.13_14" <- function(A, C, m, z, tol=0, maxiter=2000, method="a"){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
   stopifnot(is.near_integer(m))
+  m <- round(m)
   if(is.zero(m)){
     return(f15.3.13(A  ,C   ,z,tol=tol,maxiter=maxiter,method=method))
   } else if (m>0){
@@ -1195,7 +1218,6 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   f <- function(k){prod(U+k)/prod(k+c(1,L))}
   alpha <- z*sapply(seq_len(maxiter), f)
   1+z*prod(U)/(prod(L)*(1+GCF(a = -alpha , b = 1+alpha, tol=tol)))
-  
 }
 
 "genhypergeo_contfrac" <- function(U, L, z, tol=0, maxiter=2000){
@@ -1215,3 +1237,205 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   attributes(out) <- attr
   return(out)
 }
+
+
+"hypergeo_residue_general" <- function(A, B, C, z, r, O=z, tol=0, maxiter=2000){
+    if(!is.null(getOption("showHGcalls"))){print(match.call())}
+    stopifnot(length(z)==1)
+    residue(f=function(z){hypergeo(A,B,C,z,tol=tol,maxiter=maxiter)}, z0=z, r=0.15, O=O)
+}
+
+"hypergeo_residue_close_to_crit_single" <- function(A, B, C, z, strategy='A', tol=0, maxiter=2000){
+
+    if(!is.null(getOption("showHGcalls"))){print(match.call())}
+
+    jj <- crit()
+    c1 <- jj[1]
+    c2 <- jj[2]
+    
+    if(
+        (abs(z-c1) <= 0.1)   &
+        (abs(z-c2) <= 0.1)
+        ) {stop("this cannot happen")}
+
+    
+    stopifnot(
+        (abs(z-c1) <= 0.1)   |
+        (abs(z-c2) <= 0.1)
+        )
+
+    if(abs(z-c1) <= 0.1){
+        crit <- c1
+    } else {
+        crit <- c2
+    }
+
+    O <- switch(
+        strategy,
+        A = crit,
+        B = z,
+        stop('strategy must be A or B')
+        )
+        
+    hypergeo_residue_general(A=A,B=B,C=C, z=z, r=0.15, O=O, tol=tol, maxiter=maxiter)
+
+}
+
+"hypergeo_residue_close_to_crit_multiple" <- function(A, B, C, z, strategy='A', tol=0, maxiter=2000){
+    if(!is.null(getOption("showHGcalls"))){print(match.call())}
+    sapply(z, function(z){
+        hypergeo_residue_close_to_crit_single(A,B,C,z,strategy=strategy,tol=tol,maxiter=maxiter)
+    } )
+}    
+
+"lpham" <- function(x,n){lgamma(x+n)-lgamma(x)}
+
+"buhring_eqn11" <- function(n,S,A,B,C,z0=1/2){  #NB no z
+    stopifnot(length(z0)==1)
+    if(length(n)>1) {return(sapply(n,function(nn){buhring_eqn11(n=nn,S,A,B,C,z0=z0)}))}
+    return(
+        exp(
+            +lpham(S,n)
+            +lpham(1+S-C,n)
+            -lpham(1+2*S-A-B,n)
+            -lfactorial(n)
+            ) * hypergeo(-n, A+B-2*S-n, C-S-n, z=z0)
+        )
+}
+
+"buhring_eqn12" <- function(n,S,A,B,C,z0=1/2){
+    stopifnot(length(z0)==1)
+    if(length(n)>1) {return(sapply(n,function(nn){buhring_eqn12(n=nn,S,A,B,C,z0=z0)}))}
+    
+    return(
+        (-1)^n*
+        exp(
+            +lpham(S,n)
+            +lpham(S+C-A-B,n)
+            -lpham(1+2*S-A-B,n)
+            -lfactorial(n)
+            ) * hypergeo(-n,A+B-2*S-n, 1+A+B-S-C-n, z=1-z0)
+        )
+}
+    
+"buhring_eqn5_factors" <- function(A,B,C,z,z0=1/2){
+    c(
+        exp(
+            +lgamma(C)
+            +lgamma(B-A)
+            -lgamma(B)
+            -lgamma(C-A)
+            -A*log(z0-z)
+            ),
+        exp(
+            +lgamma(C)
+            +lgamma(A-B)
+            -lgamma(A)
+            -lgamma(C-B)
+            -B*log(z0-z)
+            )
+        )    
+}
+
+"buhring_eqn5_series" <- function(S,A,B,C,z,z0=1/2,use11=FALSE,tol=0,maxiter=2000){  # sum
+    if(!is.null(getOption("showHGcalls"))){print(match.call())}
+    if(length(z)==0){return(z)}
+    
+    if(use11){
+        f <- buhring_eqn11
+    } else {
+        f <- buhring_eqn12
+    }
+    temp <- 1
+    n <- 1
+    while(n < maxiter){
+        out <- temp + f(n,S=S,A=A,B=B,C=C,z0=z0)/(z-z0)^n
+        if(isgood(out-temp,tol)){return(out)}
+        temp <- out
+        n <- n+1
+    }
+    warning("series not converged")
+    return(out)
+}
+
+"hypergeo_buhring" <- function(A,B,C,z,z0=1/2,tol=0,maxiter=2000,use11=TRUE){
+    jj <- buhring_eqn5_factors(A,B,C,z,z0)
+    return(
+        jj[1]*buhring_eqn5_series(S=A,A,B,C,z,z0=1/2,use11=use11,tol=tol,maxiter=maxiter)+
+        jj[2]*buhring_eqn5_series(S=B,A,B,C,z,z0=1/2,use11=use11,tol=tol,maxiter=maxiter)
+        )
+}
+
+"shanks" <- function(Last,This,Next){
+    if(identical(Next,This)){return(Next)}
+    num <- Next*Last - This^2
+    den <- Next-2*This+Last
+
+    if(den==0){
+        return(Next)
+    } else {
+        return(num/den)
+    }
+}
+ 
+"genhypergeo_shanks" <-
+function (U, L, z,  maxiter=20){
+    if(!is.null(getOption("showHGcalls"))){print(match.call())}
+
+    fac <- 1
+    temp <- fac
+    
+    if(maxiter==0){ return(z*0+fac) }
+    
+    Last <- 0
+    This <- 1
+    Next <- 2
+    
+    Shanks <- shanks(Last,This,Next)
+    
+    for (n in seq_len(maxiter)) {
+        
+        fac.old <- fac
+        fac <- fac * (prod(U)/prod(L)) * (z/n)
+        fac.new <- fac
+        
+        series <- temp + fac
+        ## following three lines a "conveyor belt" Next -> This -> Last
+        Last <- This
+        This <- Next
+        Next <- series
+        
+        Shanks.old <- Shanks
+        Shanks <- shanks(Last,This,Next)
+        
+        temp <- series
+        U <- U + 1      
+        L <- L + 1
+    }
+    return(series)
+} 
+
+"hypergeo_shanks" <- function (A, B, C, z, maxiter = 20){
+    genhypergeo_shanks(U=c(A,B), L=C, z=z,maxiter=maxiter)
+}
+
+"hypergeo_gosper" <- function(A, B, C, z, tol=0, maxiter=2000){
+    d <- 0
+    e <- 1
+    f <- 0
+
+    for(k in 0:maxiter){
+        dnew <- (k+A)*(k+B)*z*(e-(k+C-B-A)*d*z/(1-z))  /(4*(k+1)*(k+C/2)*(k+(C+1)/2))
+        enew <- (k+A)*(k+B)*z*(A*B*d*z/(1-z) + (k+C)*e)/(4*(k+1)*(k+C/2)*(k+(C+1)/2))
+        fnew <- f-d*(k*((C-B-A)*z+k*(z-2)-C)-A*B*z)    /(2*      (k+C/2)*(1-z)      )+e
+        
+        if(isgood(f-fnew,tol)){return(f)}
+        d <- dnew
+        e <- enew
+        f <- fnew
+    }
+    warning("not converged")
+    return(f)
+}
+    
+    
