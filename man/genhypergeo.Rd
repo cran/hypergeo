@@ -73,7 +73,7 @@ genhypergeo_contfrac(U, L, z, tol = 0, maxiter = 2000)
 \note{
   The radius of convergence for the series is 1 but under some
   circumstances, analytic continuation defines a function over the whole
-  complex plane (possibly cut along \eqn{(0,\infty)}{(0,inf)}).  Further
+  complex plane (possibly cut along \eqn{(1,\infty)}{(1,inf)}).  Further
   work would be required to implement this.
 }
 \seealso{\code{\link{hypergeo}},\code{\link{genhypergeo_contfrac}}}

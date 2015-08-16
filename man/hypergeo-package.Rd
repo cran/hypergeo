@@ -26,7 +26,8 @@ Maintainer: <hankin.robin@gmail.com>
 
 }
 \references{
-AnS
+  M. Abramowitz and I. A. Stegun 1965. \emph{Handbook of
+    mathematical functions}.  New York: Dover
 }
 \keyword{ package }
 \examples{

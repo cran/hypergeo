@@ -3,14 +3,16 @@
 \title{The hypergeometric function}
 \description{
 The Hypergeometric and generalized hypergeometric functions as defined
-by Abramowitz and Stegun.  
+by Abramowitz and Stegun.    Function \code{hypergeo()} is the user
+interface to the majority of the package functionality; it dispatches to
+one of a number of subsidiary functions.
 }
 \usage{
 hypergeo(A, B, C, z, tol = 0, maxiter=2000)
 }
 \arguments{
   \item{A,B,C}{Parameters for \code{hypergeo()}}
-  \item{z}{argument}
+  \item{z}{Primary argument, complex}
   \item{tol}{absolute tolerance; default value of zero means to continue
   iterating until the result does not change to machine precision;
   strictly positive values give less accuracy but faster evaluation}
@@ -59,12 +61,13 @@ This reference book gives the correct radius of convergence; use the
 ratio test to verify it.  Thus if \eqn{|z|>1}, the hypergeometric series
 will diverge and function \code{genhypergeo()} will fail to converge.
 
-However, the hypergeometric function is meromorphic, so analytic
-continuation may be used to define a function over the whole complex
-plane (excepting any poles).  Function \code{hypergeo()} should be used
-here.
+However, the hypergeometric function is defined over the whole of the
+complex plane, so analytic continuation may be used if appropriate cut
+lines are used.  A cut line must join \eqn{z=1} to (complex) infinity;
+it is conventional for it to follow the real axis in a positive
+direction from \eqn{z=1} but other choices are possible.
 
-Note that in using these transformations one sometimes draws a
+Note that in using the package one sometimes draws a
 \dQuote{full precision not achieved} warning from \code{gamma()}; and
 complex arguments are not allowed.  I would suggest either ignoring the
 warning (the error of \code{gamma()} is unlikely to be large) or to use

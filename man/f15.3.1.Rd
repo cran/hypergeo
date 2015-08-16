@@ -4,7 +4,7 @@
 \title{Hypergeometric function using Euler's integral representation}
 \description{
 Hypergeometric function using Euler's integral representation, evaluated
-using the numerical contour integrals
+using numerical contour integrals.
 }
 \usage{
 f15.3.1(A, B, C, z, h = 0)

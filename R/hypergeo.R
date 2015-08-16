@@ -116,12 +116,11 @@
 
 "i15.3.9" <- function(A,B,C){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
-  c(
-    gamma(C)*gamma(C-A-B)/(gamma(C-A)*gamma(C-B)),
-    gamma(C)*gamma(A+B-C)/(gamma(  A)*gamma(  B))
-    )
-}
-
+  return(c(
+      ifelse(is.nonpos(C-A)|is.nonpos(C-B), 0, gamma(C)*gamma(C-A-B)/(gamma(C-A)*gamma(C-B))),
+      ifelse(is.nonpos(  A)|is.nonpos(B)  , 0, gamma(C)*gamma(A+B-C)/(gamma(  A)*gamma(  B)))
+    ))
+} 
 "j15.3.9" <- function(A,B,C){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
   is.nonpos(c(
@@ -400,6 +399,7 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   } 
   
   m <- -(A+B-C)   # Former bug!
+
   if(is.near_integer(m)){  # This is the "Each term of 15.3.6 has a pole..." on p559
     return(hypergeo_cover1(A,B,m,z,tol=tol,maxiter=maxiter))
   }
@@ -1242,7 +1242,7 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
 "hypergeo_residue_general" <- function(A, B, C, z, r, O=z, tol=0, maxiter=2000){
     if(!is.null(getOption("showHGcalls"))){print(match.call())}
     stopifnot(length(z)==1)
-    residue(f=function(z){hypergeo(A,B,C,z,tol=tol,maxiter=maxiter)}, z0=z, r=0.15, O=O)
+    residue(f=function(z){hypergeo(A,B,C,z,tol=tol,maxiter=maxiter)}, z0=z, r=0.15, O=O) # NB: residue() is defined in the elliptic package
 }
 
 "hypergeo_residue_close_to_crit_single" <- function(A, B, C, z, strategy='A', tol=0, maxiter=2000){

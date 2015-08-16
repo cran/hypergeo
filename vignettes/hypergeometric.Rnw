@@ -276,7 +276,7 @@ evaluate~$\psi\left(\cdot\right)$ \emph{ab initio} each time it is
 needed, or to use the recurrence
 relation~$\psi\left(z+1\right)=\psi\left(z\right)+1/z$ at each
 iteration after the first.  These two options appear to be comparable
-in terms of both numerical accuracy and speed of excecution, but
+in terms of both numerical accuracy and speed of execution, but
 further work would be needed to specify which is preferable in this
 context.
 
@@ -310,7 +310,7 @@ the real case considered by~\citet{forrey1997}.
 These points were considered by \cite{buhring1987} who presented a
 computational method for these values; however, his method is not
 suitable for finite-precision arithmetic (a brief discussion is
-presented at \code{?burhing}) and the package employs either an
+presented at \code{?buhring}) and the package employs either an
 iterative scheme due to Gosper~\citep{mpmath}, or the residue theorem
 if~$z$ is close to either of these points.
 
