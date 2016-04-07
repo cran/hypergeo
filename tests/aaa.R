@@ -162,8 +162,6 @@ jjM <- -0.10592465301475818414e-1 - 0.15993048891187879153e-1i
 jjR <- hypergeo(pi , pi+1 , pi + 3 , 1+6i)
 stopifnot(Mod(jjR-jjM)<1e-10)
 
-
-
 # Test for hypergeo_taylor():
 jjR <- hypergeo(pi,-4,2.2,1+5i)
 jjM <- 1670.8287595795885335 - 204.81995157365381258i
@@ -175,3 +173,37 @@ stopifnot(Mod(jjR-jjM)<1e-10)
 options(warn=2)
 ignore <- hypergeo(1,2,3,0)
 ignore <- hypergeo(1,1.64,2.64,-0.1111)
+
+
+# another test for a bug reported by John Ormerod, following my
+# ill-considered change from gamma(x)*gamma(y)/gamma(z) to
+# exp(lgamma(x)+lgamma(y)-lgamma(z)).  Now using the much superior
+# .f3() and .f4() notation.
+
+## MMA> N[Hypergeometric2F1[525/100,1,65/10,501/1000],30]
+## Out[6]= 1.70239432012007391092082702795
+
+
+jjR <- hypergeo(5.25,1,6.5,0.501)
+jj_Mathematica <- 1.70239432012007391092082702795
+stopifnot(Mod(jjR-jj_Mathematica) < 1e-10)
+
+
+
+
+
+
+ ## another test for a typo I corrected:
+
+
+ A <- 1
+ B <- 3
+ m <- 2
+jj_R1 <- hypergeo(A,B,A+B+m,0.9+0.01i)
+jj_R2 <- f15.3.11(A,B,m,0.9+0.01i)
+
+mma_string <- 'N[Hypergeometric2F1[1,3,1+3+2,9/10+I/100],30]'
+jj_mathematica <- 2.04925816767572859287575551415 + 0.03163091033158608113987207436i
+stopifnot(abs(jj_R1-jj_mathematica) < 1e-10)
+stopifnot(abs(jj_R2-jj_mathematica) < 1e-10)
+

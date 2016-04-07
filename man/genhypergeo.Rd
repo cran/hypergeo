@@ -15,7 +15,7 @@ genhypergeo_series(U, L, z, tol=0, maxiter=2000, check_mod=TRUE,
 genhypergeo_contfrac(U, L, z, tol = 0, maxiter = 2000)
 }
 \arguments{
-  \item{U,L}{Upper and lower arguments respectively (currently real)}
+  \item{U,L}{Upper and lower arguments respectively (real or complex)}
   \item{z}{Primary complex argument (see notes)}
   \item{tol}{tolerance with default zero meaning to iterate until
     additional terms to not change the partial sum}
@@ -26,7 +26,7 @@ genhypergeo_contfrac(U, L, z, tol = 0, maxiter = 2000)
     evaluate the series until converged, or return a warning; and
     \code{TRUE} meaning to return the sum of \code{maxiter} terms,
     whether or not converged.  This is useful when either \code{A}
-    or\code{B} is a nonpositive integer in which case the hypergeometric
+    or \code{B} is a nonpositive integer in which case the hypergeometric
     function is a polynomial}
   \item{debug}{Boolean, with \code{TRUE} meaning to return debugging
     information and default \code{FALSE} meaning to return just the

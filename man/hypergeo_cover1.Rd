@@ -18,8 +18,8 @@ hypergeo_cover3(A, n, m, z, tol = 0, maxiter = 2000, method = "a", give = FALSE)
   \item{tol,maxiter}{Numerical arguments passed to \code{genhypergeo()}}
   \item{method}{Method, passed to \code{f15.3.10()} (qv)}
   \item{give}{Boolean with \code{TRUE} meaning to return the choice of
-    function used and default \code{FALSE} meaning to return the
-    function's evaluate}
+    helper function used (eg \code{f15.3.7()}), and default \code{FALSE}
+    meaning to return the hypergeometric function's value}
 }
 \details{
 

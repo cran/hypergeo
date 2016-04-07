@@ -1,4 +1,4 @@
-\name{hypergeo_residue}
+\name{residue}
 \alias{hypergeo_residue}
 \alias{hypergeo_residue_general}
 \alias{hypergeo_residue_close_to_crit_single}
@@ -16,7 +16,7 @@ hypergeo_residue_close_to_crit_single(A, B, C, z, strategy='A', tol=0, maxiter=2
 hypergeo_residue_close_to_crit_multiple(A, B, C, z, strategy='A', tol=0, maxiter=2000)
 }
 \arguments{
-  \item{A,B,C}{Parameters (real)}
+  \item{A,B,C}{Parameters (real or complex)}
   \item{z}{Complex argument}
   \item{tol,maxiter}{tolerance and maximum number of iterations (passed to \code{hypergeo()})}
   \item{r,O}{Radius and center of circle to integrate over}
@@ -28,14 +28,14 @@ hypergeo_residue_close_to_crit_multiple(A, B, C, z, strategy='A', tol=0, maxiter
 
 These functions are not really intended for the user; \code{hypergeo()}
 uses \code{hypergeo_residue_close_to_crit_multiple()} when
-\eqn{\left|z-c\right|}{abs(z-c)} is less than \eqn{0.1} (hardwired) for \eqn{c}
-being either of the two critical points.  Infinite regress is avoided
-because the contour is always more than this distance from the critical
-points.
+\eqn{\left|z-c\right|}{abs(z-c)} is less than \eqn{0.1} (hardwired) for
+\eqn{c} being either of the two critical points.  Infinite regress is
+avoided because the contour is always more than this distance from the
+critical points.
   
 These functions use the residue theorem
-\eqn{f\left(z_0\right)=\oint_C\frac{f(z)\,dz}{z-z_0}}{f(z_0)=int dz
-f(z)/(z-z_0)} to evaluate the hypergeometric function near the two
+\eqn{f\left(z_0\right)=\oint_C\frac{f(z)\,dz}{z-z_0}}{f(z_0)=int
+f(z)dz/(z-z_0)} to evaluate the hypergeometric function near the two
 critical points \eqn{1/2\pm i\sqrt{3}/2}{0.5+/-i.sqrt(3)/2}.  These
 points are problematic because all of the transformations listed under
 \code{thingfun()} take the points either to themselves or each other.

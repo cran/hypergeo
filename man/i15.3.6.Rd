@@ -26,6 +26,9 @@ j15.3.9(A, B, C)
 }
 \details{
 
+These functions are named for their equation numbers in Abramowitz and
+Stegun.
+  
 Functions \code{i15.3.?()} return the factors at the beginning of
 equations 15.3.6-9.  These functions return zero if the denominator is
 infinite (because it includes a gamma function of a nonpositive

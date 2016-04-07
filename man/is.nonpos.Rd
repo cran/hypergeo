@@ -11,7 +11,7 @@
 Various utilities needing nonce functions
 }
 \usage{
-is.near_integer(i,  tol=getOption("tolerance"))
+is.near_integer(i, tol=getOption("tolerance"))
 is.nonpos(i)
 is.zero(i)
 isgood(x, tol)

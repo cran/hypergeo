@@ -50,6 +50,11 @@ w07.23.06.0031.01_bit2(A, n, m, z, tol = 0, maxiter = 2000)
     n}{m<=n}. 
   } 
 }
+\note{
+  These functions use the \code{psigamma()} function which does not yet
+  take complex arguments; this means that complex values for \code{A}
+  are not supported.  I'm working on it.
+  }
 \references{
   \url{http://functions.wolfram.com/Hypergeometric2F1.pdf}
 }
@@ -67,14 +72,11 @@ jjR <- w07.23.06.0026.01(A=1.1 , n=1 , m=4 , z=1+1i)
 stopifnot(Mod(jjM - jjR) < 1e-10)
 
 
-
 jjM <- -0.25955090546083991160e-3 - 0.59642767921444716242e-3i
 jjR <- w07.23.06.0029.01(A=4.1 , n=1 , m=1 , z=1+4i)
 # [In practice, one would type 'hypergeo(4.1, 3.1, 5.1, 1+1i)']
 
 stopifnot(Mod(jjM - jjR) < 1e-15)
-
-
 
 jjM <- 0.33186808222278923715e-1 - 0.40188208572232037363e-1i
 jjR <- w07.23.06.0031.01(6.7,2,1,2+1i)

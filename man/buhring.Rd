@@ -30,7 +30,7 @@ buhring_eqn5_series(S,A,B,C,z,z0=1/2,use11=FALSE,tol=0,maxiter=2000)
   \item{tol,maxiter}{tolerance and maximum number of iterations (as
     in \code{hypergeo()})}
   \item{use11}{Boolean with default \code{TRUE} meaning to use
-    \code{buhring_eqn11()} and \code{FALSE} meaning to use     \code{buhring_eqn12()}}
+    \code{buhring_eqn11()} and \code{FALSE} meaning to use \code{buhring_eqn12()}}
 }
 \details{
 
@@ -42,6 +42,9 @@ Functions \code{buhring_eqn11()} and \code{buhring_eqn12()} return the
 coefficients \eqn{d_n}{d(n)} given by equations 11 and 12 of Buhring
 1987.  
 
+The series do not converge satisfactorily near the critical points due
+to some sort of numerical instability.  But they seem to work OK if
+\eqn{|z-1/2|} is large.
 
 }
 \references{ 
@@ -52,7 +55,9 @@ coefficients \eqn{d_n}{d(n)} given by equations 11 and 12 of Buhring
 }
 \author{Robin K. S. Hankin}
 \note{
-The 
+There is some issue which prevents the series from converging correctly,
+also sometimes the sequence converges to a demponstrably incorrect
+value. 
 }
 \seealso{\code{\link{residue}}}
 \examples{
@@ -62,6 +67,11 @@ The
 buhring_eqn11(n=0:10,S=1/2,A=1/2,B=1/3,C=pi)
 buhring_eqn12(n=0:10,S=1/2,A=1/2,B=1/3,C=pi)
 # but differ in one element
+
+
+a <- hypergeo(1/2,1/3,4,1+8i,maxiter=90)
+b <- hypergeo_buhring(1/2,1/3,4,1+8i,maxiter=90)
+# should be identical but are not 
 
 
 # following command fails due to numerical instability:

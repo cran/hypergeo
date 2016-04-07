@@ -11,7 +11,7 @@ hypergeo_contfrac(A, B, C, z, tol = 0, maxiter = 2000)
 genhypergeo_contfrac_single(U, L, z, tol = 0, maxiter = 2000)
 }
 \arguments{
-  \item{A,B,C}{Parameters (real)}
+  \item{A,B,C}{Parameters (real or complex)}
   \item{U,L}{In function \code{genhypergeo_contfrac()}, upper and lower
     arguments as in \code{genhypergeo()}} 
   \item{z}{Complex argument}

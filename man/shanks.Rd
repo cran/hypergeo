@@ -13,7 +13,7 @@ genhypergeo_shanks(U,L,z,maxiter=20)
 shanks(Last,This,Next)
 }
 \arguments{
-  \item{A,B,C}{Parameters (real)}
+  \item{A,B,C}{Parameters (real or complex)}
   \item{U,L}{Upper and lower vectors}
   \item{z}{Primary complex argument}
   \item{maxiter}{Maximum number of iterations}

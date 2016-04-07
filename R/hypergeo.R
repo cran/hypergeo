@@ -1,3 +1,11 @@
+`.f3` <- function(a1,a2,a3){
+  exp(complex_gamma(a1,log=TRUE) - complex_gamma(a2,log=TRUE) - complex_gamma(a3,log=TRUE))
+}
+
+`.f4` <- function(a1,a2,a3,a4){
+  exp(complex_gamma(a1,log=TRUE) + complex_gamma(a2,log=TRUE) - complex_gamma(a3,log=TRUE) - complex_gamma(a4,log=TRUE))
+}
+
 "f15.1.1" <- function(A, B, C, z, tol=0, maxiter=2000){
     if(!is.null(getOption("showHGcalls"))){print(match.call())}
     genhypergeo(U=c(A,B), L=C, z=z, tol=tol, maxiter=maxiter)
@@ -5,7 +13,9 @@
 
 "f15.3.1" <- function(A,B,C,z,h=0){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
-  mult <- gamma(C)/(gamma(B)*gamma(C-B))
+# mult <- exp(lgamma(C)-lgamma(B)-lgamma(C-B))
+  mult <- .f3(C,B,C-B)
+
   f <- function(t){t^(B-1)*(1-t)^(C-B-1)*(1-t*z)^(-A)}
   if(length(h)==1){
     if(h==0){
@@ -36,10 +46,10 @@
 
 "i15.3.6" <- function(A,B,C){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
-  return(c(
-      ifelse(is.nonpos(C-A) | is.nonpos(C-B), 0, gamma(C)*gamma(C-A-B)/(gamma(C-A)*gamma(C-B))),
-      ifelse(is.nonpos(A  ) | is.nonpos(B  ), 0, gamma(C)*gamma(A+B-C)/(gamma(  A)*gamma(  B)))
-      ))
+  c(
+     ifelse(is.nonpos(C-A) | is.nonpos(C-B), 0, .f4(C, C-A-B, C-A,C-B)),
+     ifelse(is.nonpos(A  ) | is.nonpos(B  ), 0, .f4(C, A+B-C, A  , B ))
+    )
 }
 
 "j15.3.6" <- function(A,B,C){
@@ -62,10 +72,11 @@
 
 "i15.3.7" <- function(A,B,C){
     if(!is.null(getOption("showHGcalls"))){print(match.call())}
-    return(c(
-        ifelse(is.nonpos(B) | is.nonpos(C-A), 0, gamma(C)*gamma(B-A)/(gamma(B)*gamma(C-A))),
-        ifelse(is.nonpos(A) | is.nonpos(C-B), 0, gamma(C)*gamma(A-B)/(gamma(A)*gamma(C-B)))
-        ))
+
+    c(
+        ifelse(is.nonpos(B) | is.nonpos(C-A), 0, .f4(C,B-A,B,C-A)),
+        ifelse(is.nonpos(A) | is.nonpos(C-B), 0, .f4(C,A-B,A,C-B))
+    )
 }
 
 "j15.3.7" <- function(A,B,C){
@@ -88,10 +99,12 @@
 
 "i15.3.8" <- function(A,B,C){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
-  return(c(
-      ifelse(is.nonpos(B) | is.nonpos(C-A), 0, gamma(C)*gamma(B-A)/(gamma(B)*gamma(C-A))),
-      ifelse(is.nonpos(A) | is.nonpos(C-B), 0, gamma(C)*gamma(A-B)/(gamma(A)*gamma(C-B)))
-      ))
+
+   c(
+      ifelse(is.nonpos(B) | is.nonpos(C-A), 0, .f4(C,B-A,B,C-A)),
+      ifelse(is.nonpos(A) | is.nonpos(C-B), 0, .f4(C,A-B,A,C-B))
+    )
+
 }
 
 "j15.3.8" <- function(A,B,C){
@@ -117,8 +130,8 @@
 "i15.3.9" <- function(A,B,C){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
   return(c(
-      ifelse(is.nonpos(C-A)|is.nonpos(C-B), 0, gamma(C)*gamma(C-A-B)/(gamma(C-A)*gamma(C-B))),
-      ifelse(is.nonpos(  A)|is.nonpos(B)  , 0, gamma(C)*gamma(A+B-C)/(gamma(  A)*gamma(  B)))
+      ifelse(is.nonpos(C-A)|is.nonpos(C-B), 0, .f4(C,C-A-B,C-A,C-B)),
+      ifelse(is.nonpos(  A)|is.nonpos(B)  , 0, .f4(C,A+B-C,A,    B))
     ))
 } 
 "j15.3.9" <- function(A,B,C){
@@ -292,10 +305,6 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
    
 "hypergeo" <- function(A, B, C, z, tol=0, maxiter=2000){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
-  
-  if(is.complex(c(A,B,C))){
-    stop("complex values of A,B,C not supported.  If you really really want complex values, let me know")
-  } 
   
   if(length(A)>1 | length(B)>1 | length(C)>1){
     jj <- .process_args(A,B,C,z)
@@ -675,7 +684,8 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   
   U <- c(A,B)
   L <- 1-m
-  mult <- gamma(m)*gamma(A+B+m)/(gamma(A+m)*gamma(B+m))
+# mult <- exp(lgamma(m)+lgamma(A+B+m)-lgamma(A+m)-lgamma(B+m))
+  mult <- .f4(m,A+B+m,A+m,B+m)
   series <- z*0+1
   z[Mod(1-z)>1] <- NA
   fac <- 1
@@ -710,7 +720,8 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
     series <-
       temp + fac * (l1mz - psigamma(n+1) - psigamma(n+m+1) + psigamma(A+n+m) + psigamma(B+n+m))
     if(isgood(series-temp,tol)){
-      return((z-1)^m * gamma(A+B+m)/(gamma(A)*gamma(B)) * series)
+#      return((z-1)^m * exp(lgamma(A+B+m)-lgamma(A)-lgamma(B)) * series)
+       return((z-1)^m * .f3(A+B+m,A,B) * series)
     }
     temp <- series
     U <- U+1
@@ -745,7 +756,8 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
     series <-
       temp + fac * (l1mz - pn - pm + pa + pb)
     if(isgood(series-temp,tol)){
-      return((z-1)^m * gamma(A+B+m)/(gamma(A)*gamma(B)) * series)
+#      return((z-1)^m * exp(lgamma(A+B+m)-lgamma(A)-lgamma(B)) * series)
+       return((z-1)^m * .f3(A+B+m,A,B) * series)
     }
     temp <- series
     U <- U+1
@@ -768,7 +780,8 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   m <- round(m)
   U <- c(A-m,B-m)
   L <- 1-m
-  mult <- ((gamma(m)*gamma(A+B-m))/(gamma(A)*gamma(B))) / (1-z)^m
+# mult <- exp(lgamma(m)+lgamma(A+B-m)-lgamma(A)-lgamma(B)) / (1-z)^m
+  mult <- .f4(m,A+B-m,A,B) / (1-z)^m
   z[Mod(1-z)>1] <- NA
   fac <- 1
   temp <- fac
@@ -791,7 +804,8 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
   m <- round(m)
   if(is.nonpos(A-m)|is.nonpos(B-m)){return(z*0)}
-  mult <- (-1)^m * gamma(A+B-m)/(gamma(A-m)*gamma(B-m))
+# mult <- (-1)^m * exp(lgamma(A+B-m)-lgamma(A-m)-lgamma(B-m))
+  mult <- (-1)^m * .f3(A+B-m,A-m,B-m)
 
   U <- c(A , B)  # sic
   z[Mod(1-z) >= 1]  <- NA
@@ -817,7 +831,8 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
   m <- round(m)
   if(is.nonpos(A-m)|is.nonpos(B-m)){return(z*0)}
-  mult <- (-1)^m * gamma(A+B-m)/(gamma(A-m)*gamma(B-m))
+#  mult <- (-1)^m * exp(lgamma(A+B-m)-lgamma(A-m)-lgamma(B-m))
+   mult <- (-1)^m * .f3(A+B-m,A-m,B-m)
 
   U <- c(A , B)  # sic
   z[Mod(1-z) >= 1]  <- NA
@@ -877,7 +892,8 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
     fac <- fac * prod(U) / (z*n^2)
     series <- temp + fac * (lmz + 2*psigamma(n+1) - psigamma(A+n) - psigamma(C-A-n))
     if(isgood(series-temp,tol)){
-      return(series * (gamma(C)/(gamma(A)*gamma(C-A))) * (0i-z)^(-A))
+#      return(series * exp(lgamma(C)-lgamma(A)-lgamma(C-A)) * (0i-z)^(-A))
+       return(series * .f3(C,A,C-A) * (0i-z)^(-A))
     }
     temp <- series
     U <- U+1
@@ -903,7 +919,8 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
     pc <- pc - 1/(C-A-n)  # The term is psi(c-a-n), not psi(c-a+n)
     series <- temp + fac * (lmz + 2*pn - pa - pc)
     if(isgood(series-temp,tol)){
-      return(series * (gamma(C)/(gamma(A)*gamma(C-A))) * (0i-z)^(-A))
+#      return(series * exp(lgamma(C)-lgamma(A)-lgamma(C-A)) * (0i-z)^(-A))
+       return(series * .f3(C,A,C-A) * (0i-z)^(-A))
     }
     temp <- series
     U <- U+1
@@ -917,7 +934,14 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   m <- round(m)
   U <- c(A+m, 1-C+A+m)
   z[Mod(z) < 1]  <- NA
-  fac <-  (gamma(A+m)/gamma(A)) * (gamma(1-C+A+m)/gamma(1-C+A))  / factorial(m)
+#  fac <-  exp(lgamma(A+m)-lgamma(A)+ lgamma(1-C+A+m)-lgamma(1-C+A)  - lfactorial(m))
+  fac <-  exp(
+      +complex_gamma(A+m,log=TRUE)
+      -complex_gamma(A,log=TRUE)
+      +complex_gamma(1-C+A+m,log=TRUE)
+      -complex_gamma(1-C+A,log=TRUE)
+      -complex_factorial(m,log=TRUE)
+      )
   lmz <- log(0i-z) 
   temp <- (lmz + psigamma(1+m) + psigamma(1) - psigamma(A+m) - psigamma(C-A-m)) * fac
   for(n in seq_len(maxiter)){
@@ -925,7 +949,8 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
     series <- 
       temp + fac * (lmz + psigamma(1+m+n) + psigamma(1+n) - psigamma(A+m+n) - psigamma(C-A-m-n))
     if(isgood(series-temp,tol)){
-      return(  (0i-z)^(-A-m) * gamma(C) / (gamma(A+m)*gamma(C-A)) * series)
+#     return(  (0i-z)^(-A-m) * exp(lgamma(C) -lgamma(A+m)-lgamma(C-A)) * series)
+      return(  (0i-z)^(-A-m) * .f3(C,A+m,C-A) * series)
     }
     temp <- series
     U <- U+1
@@ -939,7 +964,14 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   m <- round(m)
   U <- c(A+m, 1-C+A+m)
   z[Mod(z) < 1]  <- NA
-  fac <-  (gamma(A+m)/gamma(A)) * (gamma(1-C+A+m)/gamma(1-C+A))  / factorial(m)
+#  fac <-  exp(lgamma(A+m)-gamma(A) + lgamma(1-C+A+m)-lgamma(1-C+A)- factorial(m))  #NB gamma(A) should be lgamma(A)
+  fac <-  exp(
+      +complex_gamma(A+m,log=TRUE)
+      -complex_gamma(A,log=TRUE)
+      +complex_gamma(1-C+A+m,log=TRUE)
+      -complex_gamma(1-C+A)
+      -complex_factorial(m,log=TRUE)
+      )
   pm <- psigamma(m+1)  
   pn <- psigamma(1)
   pa <- psigamma(m+A)
@@ -955,7 +987,8 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
     series <-
       temp + fac * (lmz + pm + pn - pa - pc)
     if(isgood(series-temp,tol)){
-      return(  (0i-z)^(-A-m) * gamma(C) / (gamma(A+m)*gamma(C-A)) * series)
+#      return(  (0i-z)^(-A-m) * exp(lgamma(C)-lgamma(A+m)-gamma(C-A)) * series)
+      return(  (0i-z)^(-A-m) * .f3(C,A+m,C-A) * series)
     }
     temp <- series
     U <- U+1
@@ -971,14 +1004,16 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   stopifnot(m>0)
   stopifnot(is.near_integer(m))
   U <- c(A)
-  mult <- (0i-z)^(-A) * gamma(C) / gamma(A+m)
+#  mult <- (0i-z)^(-A) * exp(lgamma(C) - lgamma(A+m))
+  mult <- (0i-z)^(-A) * .f3(C,A+m,1)  # NB log(gamma(1))=0
   z[Mod(z)<1] <- NA
   fac <- 1
   temp <- gamma(m)/gamma(C-A)
   series <- z*0+temp
   for (n in seq_len(m-1)) {
     fac <- fac * prod(U) / (z*n)
-    series <- temp + fac * gamma(m-n)/gamma(C-A-n)
+#    series <- temp + fac * exp(lgamma(m-n)-lgamma(C-A-n))
+    series <- temp + fac * .f3(m-n,C-A-n,1)
     if (isgood(series-temp,tol)){
       return(series * mult)
     }
@@ -1043,7 +1078,8 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   U <- c(A,1-m)
   L <- 1-n
 
-  mult <- gamma(A+m)*gamma(n) / (gamma(m)*gamma(A+n)) * (0i-z)^(-A)
+# mult <- exp(lgamma(A+m)+lgamma(n) - lgamma(m)-lgamma(A+n)) * (0i-z)^(-A)
+  mult <- .f4(A+m,n,m,A+n) * (0i-z)^(-A)
   series <- z*0+1
   z[Mod(z) < 1] <- NA
   fac <- 1
@@ -1064,7 +1100,8 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
 
 "w07.23.06.0031.01_bit2" <- function(A, n, m, z, tol=0, maxiter=2000){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
-  (-1)^m* (gamma(A+m)/gamma(A)) * factorial(n-m) *(0i-z)^(-A-n) / factorial(n) *
+# (-1)^m* (gamma(A+m)/gamma(A)) * factorial(n-m) *(0i-z)^(-A-n) / factorial(n) *
+  (-1)^m*(0i-z)^(-A-n) * .f4(A+m,n-m+1,A,n+1)*
     hypergeo(A+n , 1-m+n , n+1 , 1/z , tol=tol , maxiter=maxiter)
 }
 
@@ -1104,7 +1141,8 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   if(length(z)==0){return(z)}
   if(is.zero(n)){ return(0) }
   
-  mult <- gamma(n)*gamma(A+m)*(-z)^(-A) / (gamma(m)*gamma(A+n))
+# mult <- gamma(n)*gamma(A+m)*(-z)^(-A) / (gamma(m)*gamma(A+n))
+  mult <- (0i-z)^(-A) * .f4(n,A+m,m,A+n)
 
   U <- c(A,1-m)
   L <- 1-n
@@ -1130,15 +1168,16 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
 "w07.23.06.0026.01_bit2" <- function(A, n, m, z, tol=0, maxiter = 2000){  # checks with Maple
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
   mult <-
-    (-1)^n * gamma(A+m)^2 * (-z)^(-A-m) /
-      (gamma(A)*gamma(A+n)*factorial(m)*factorial(m-n))
+    (-1)^n * (-z)^(-A-m) * .f3(A+m,A,A+n) * .f3(A+m,m+1,m-n+1)
+#      (gamma(A)*gamma(A+n)*factorial(m)*factorial(m-n))
   return(mult * genhypergeo(U=c(1,1,A+m),L=c(m+1,m-n+1), z=1/z, tol=tol, maxiter=maxiter))
 }
 
 "w07.23.06.0026.01_bit3_a" <- function(A, n, m, z, tol=0){ #"_a" means use psigamma, "_b" means use 6.3.5.
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
   U <- c(A+n , 1-m+n)
-  mult <- (-1)^n * gamma(A+m) / (gamma(A)*factorial(m-n-1)) * (-z)^(-A-n)
+#  mult <- (-1)^n * exp(lgamma(A+m)-lgamma(A)-lfactorial(m-n-1)) * (-z)^(-A-n)
+   mult <- (-1)^n * .f3(A+m,A,m-n) * (-z)^(-A-n)
   
   fac <- 1/factorial(n)
   lmz <- log(0i-z)
@@ -1161,7 +1200,8 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
 "w07.23.06.0026.01_bit3_b" <- function(A, n, m, z, tol=0){ #"_a" means use psigamma, "_b" means use 6.3.5.
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
   U <- c(A+n , 1-m+n)
-  mult <- (-1)^n*gamma(A+m) / (gamma(A)*factorial(m-n-1)) * (-z)^(-A-n)
+# mult <- (-1)^n*exp(lgamma(A+m)-lgamma(A)-lfactorial(m-n-1)) * (-z)^(-A-n)
+  mult <- (-1)^n*.f3(A+m,A,m-n) * (-z)^(-A-n)
   
   fac <- 1/factorial(n)
   lmz <- log(0i-z)
@@ -1200,7 +1240,8 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
   poch <- function(x,j){ prod(x + (seq_len(j)-1)) }
   
-  mult <- ((-1)^n*gamma(A+m)/(gamma(A)*factorial(m-n-1)))*(-z)^(-A-n)
+#  mult <- ((-1)^n*gamma(A+m)/(gamma(A)*factorial(m-n-1)))*(-z)^(-A-n)
+   mult <- ((-1)^n*.f3(A+m,A,m-n))*(-z)^(-A-n)
   out <- 0
 
   for(k in 0:(m-n-1)){
@@ -1321,17 +1362,17 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
 "buhring_eqn5_factors" <- function(A,B,C,z,z0=1/2){
     c(
         exp(
-            +lgamma(C)
-            +lgamma(B-A)
-            -lgamma(B)
-            -lgamma(C-A)
+            +complex_gamma(C,log=TRUE)
+            +complex_gamma(B-A,log=TRUE)
+            -complex_gamma(B,log=TRUE)
+            -complex_gamma(C-A,log=TRUE)
             -A*log(z0-z)
             ),
         exp(
-            +lgamma(C)
-            +lgamma(A-B)
-            -lgamma(A)
-            -lgamma(C-B)
+            +complex_gamma(C,log=TRUE)
+            +complex_gamma(A-B,log=TRUE)
+            -complex_gamma(A,log=TRUE)
+            -complex_gamma(C-B,log=TRUE)
             -B*log(z0-z)
             )
         )    
