@@ -24,7 +24,7 @@
 \title{Numerical evaluation of the Gauss hypergeometric function with
   the \pkg{hypergeo} package}
 
-%\VignetteIndexEntry{The hyperdirichlet distribution in practice}
+%\VignetteIndexEntry{The hypergeo package}
 
 %% for pretty printing and a nice hypersummary also set:
 \Plainauthor{Robin K. S. Hankin}
