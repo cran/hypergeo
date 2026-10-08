@@ -1,4 +1,4 @@
-### R code from vignette source 'hypergeometric.Rnw'
+### R code from vignette source 'hypergeo.Rnw'
 
 ###################################################
 ### code chunk number 1: set_calculate_from_scratch
@@ -51,5 +51,3 @@ view(x,y,hz,levels=seq(from=-4,to=4),xlab='Real',ylab='Imag')
 ### code chunk number 7: wp_figure_close
 ###################################################
 null <- dev.off()
-
-

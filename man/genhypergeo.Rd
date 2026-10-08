@@ -52,7 +52,7 @@ genhypergeo_contfrac(U, L, z, tol = 0, maxiter = 2000)
       (u_i)_n}{(l_1)_n(l_2)_n\ldots
       (l_j)_n}\cdot\frac{z^n}{n!}}{[omitted; see PDF]} where
       \eqn{U=\left(u_1,\ldots,u_i\right)}{U=(u_1,...,u_i)} and
-      \eqn{L=\left(l_1,\ldots,l_i\right)}{L=(l_1,...,l_i)} are the
+      \eqn{L=\left(l_1,\ldots,l_i\right)}{L=(l_1,...,l_j)} are the
       \dQuote{upper} and \dQuote{lower} vectors respectively.  The
       radius of convergence of this formula is 1.
   
@@ -69,12 +69,22 @@ genhypergeo_contfrac(U, L, z, tol = 0, maxiter = 2000)
   M. Abramowitz and I. A. Stegun 1965. \emph{Handbook of
     mathematical functions}.  New York: Dover
 }
-\author{Robin K. S. Hankin}
+\author{Robin K. S. Hankin and Richard Morey}
 \note{
   The radius of convergence for the series is 1 but under some
   circumstances, analytic continuation defines a function over the whole
   complex plane (possibly cut along \eqn{(1,\infty)}{(1,inf)}).  Further
   work would be required to implement this.
+
+  Function \code{genhypergeo()} tests for its return value being either
+  on (or close to) the real axis, and if so, coerces its value to
+  numeric:
+
+  \code{if(all(zapsmall(Im(out)) == 0)){out <- Re(out)}}
+
+  Thus the code is sensitive, via \code{zapsmall()}, to the value of
+  \code{getOption("digits")}.
+   
 }
 \seealso{\code{\link{hypergeo}},\code{\link{genhypergeo_contfrac}}}
 \examples{

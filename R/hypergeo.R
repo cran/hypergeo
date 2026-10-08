@@ -11,6 +11,16 @@
     genhypergeo(U=c(A,B), L=C, z=z, tol=tol, maxiter=maxiter)
 }
 
+"f15.1.20" <- function(A, B, C){
+    if(!is.null(getOption("showHGcalls"))){print(match.call())}
+    exp(
+        + complex_gamma(C    , log=TRUE)
+        + complex_gamma(C-A-B, log=TRUE)
+        - complex_gamma(C-A  , log=TRUE)
+        - complex_gamma(C-B  , log=TRUE)
+    )
+}
+
 "f15.3.1" <- function(A,B,C,z,h=0){
   if(!is.null(getOption("showHGcalls"))){print(match.call())}
 # mult <- exp(lgamma(C)-lgamma(B)-lgamma(C-B))
@@ -66,8 +76,12 @@
     return(z)
   }
   jj <- i15.3.6(A,B,C)
-      jj[1] * genhypergeo(U=c(  A,  B),L=A+B-C+1,z=1-z,tol=tol,maxiter=maxiter) +
-      jj[2] * genhypergeo(U=c(C-A,C-B),L=C-A-B+1,z=1-z,tol=tol,maxiter=maxiter) * (1-z)^(C-A-B)
+  g1 <- jj[1] * genhypergeo(U=c(  A,  B),L=A+B-C+1,z=1-z,tol=tol,maxiter=maxiter)
+  g2 <- jj[2] * genhypergeo(U=c(C-A,C-B),L=C-A-B+1,z=1-z,tol=tol,maxiter=maxiter)
+  out <- g1
+  not1 <- z != 1
+  out[not1] <- out[not1] + g2 * (1-z[not1])^(C-A-B)
+  return(out)
 }
 
 "i15.3.7" <- function(A,B,C){
@@ -148,9 +162,14 @@
     return(z)
   }
   jj <- i15.3.9(A,B,C)
-    jj[1] *               z^( -A)*genhypergeo(U=c(A,A-C+1),L=A+B-C+1,z=1-1/z,tol=tol,maxiter=maxiter) +
-    jj[2] * (1-z)^(C-A-B)*z^(A-C)*genhypergeo(U=c(C-A,1-A),L=C-A-B+1,z=1-1/z,tol=tol,maxiter=maxiter)
-  }
+  g1 <- jj[1] * z^( -A)*genhypergeo(U=c(A,A-C+1),L=A+B-C+1,z=1-1/z,tol=tol,maxiter=maxiter)
+  g2 <- jj[2] * z^(A-C)*genhypergeo(U=c(C-A,1-A),L=C-A-B+1,z=1-1/z,tol=tol,maxiter=maxiter)
+
+  out <- g1
+  not1 <- z != 1
+  out[not1] <- out[not1] + g2 * (1-z[not1])^(C-A-B)
+  return(out)
+}
 
 "isgood" <- function(x,tol){ all(abs(x[!is.na(x)]) <= tol)}
 
@@ -171,62 +190,21 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
     stopifnot(length(z)==1)
     out <- NULL
   }
-  
-  if(check_mod){
-    lU <- length(U)
-    lL <- length(L)
-    
-    if(lU > lL+1){
-      greater <- Mod(z)>0
-    } else if(lU > lL) {
-      greater <- Mod(z)>1
-    } else {
-      greater  <- Mod(z)<0
-    }
-    if(all(greater)){
-      return(z*NA)
-    } else {
-      z[greater] <- NA
-    }
-  }
-  
-  fac <- 1
-  temp <- fac
-  if(debug){out <- temp}
-  
-  if(maxiter==0){
-    return(z*0+fac)
-  }
-  for (n in seq_len(maxiter)) {
-    fac <- fac * (prod(U)/prod(L)) * (z/n)
-    series <- temp + fac
-    if(debug){out <- c(out,fac)}
-    if (isgood(series-temp,tol)){
-      if(debug){
-        return(list(series,out))
-      } else {
 
-        return(series)
-      }
-    }
-    temp <- series
-    
-    U <- U + 1
-
-      
-    L <- L + 1
-  }
-
-  if(debug){
-    return(list(series,out))
-  }
+  myre <- function(x){if(is.null(x)){return(as.double(NULL))} else {return(Re(x))}}
+  myim <- function(x){if(is.null(x)){return(as.double(NULL))} else {return(Im(x))}}
   
-  if(polynomial){
-    return(series)
-  } else {
-    warning("series not converged")
-    return(z*NA)
-  }
+  out <- genhypergeo_series_cpp(real_U = myre(U), 
+                                imag_U = myim(U),
+                                real_L = myre(L), 
+                                imag_L = myim(L),
+                                real_z = myre(z), 
+                                imag_z = myim(z),
+                                check_mod = check_mod, maxiter = maxiter, 
+                                polynomial = polynomial, tol = tol)
+
+  if(all(zapsmall(Im(out)) == 0, na.rm = TRUE)){out <- Re(out)}
+  return(as.vector(out))
 }
 
 "hypergeo_taylor" <- function(A, B, C, z, tol=0, maxiter=2000){
@@ -336,10 +314,10 @@ function (U, L, z, tol = 0, maxiter=2000, check_mod=TRUE, polynomial=FALSE, debu
   out <- z*NA
 #  if(any( close_to_crit)){out[ close_to_crit] <- hypergeo_residue_close_to_crit_multiple(A,B,C,z[ close_to_crit], tol=tol, maxiter=maxiter)}
 #  if(any(!close_to_crit)){out[!close_to_crit] <- hypergeo_powerseries                   (A,B,C,z[!close_to_crit], tol=tol, maxiter=maxiter)}
-  
+
   if(any( close_to_crit)){out[ close_to_crit] <- hypergeo_gosper      (A,B,C,z[ close_to_crit], tol=tol, maxiter=maxiter)}
   if(any(!close_to_crit)){out[!close_to_crit] <- hypergeo_powerseries (A,B,C,z[!close_to_crit], tol=tol, maxiter=maxiter)}
-  
+
   do_with_cf <- !is.na(z) & is.na(out)   # ie failures to converge; do_with_cf == "do with Continued Fraction"
   if(any(do_with_cf)){
     out[do_with_cf] <- hypergeo_contfrac(A=A, B=B, C=C, z=z[do_with_cf], maxiter=maxiter)

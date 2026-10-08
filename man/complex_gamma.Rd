@@ -1,5 +1,6 @@
 \name{complex_gamma}
 \alias{complex_gamma}
+\alias{complex_lngamma}
 \alias{complex_factorial}
 \alias{lanczos}
 \title{
@@ -10,8 +11,9 @@ Gamma and factorial functions for complex arguments
 }
 \usage{
 complex_gamma(z, log = FALSE)
+complex_lngamma(z)
 complex_factorial(z, log = FALSE)
-lanczos(z,log=FALSE)
+lanczos(z, log=FALSE)
 }
 \arguments{
   \item{z}{Primary argument, a complex vector}
@@ -29,9 +31,7 @@ Lanczos, C. 1964. \dQuote{A precision approximation of the gamma
  M. Galassi et al, GNU Scientific Library Reference Manual (3rd Ed.), ISBN 0954612078. 
 
 }
-\author{
-Robin K. S. Hankin
-}
+\author{Richard Morey}
 
 \examples{
 
@@ -42,7 +42,7 @@ complex_gamma(1+1i)   # takes complex arguments
 complex_gamma(-5/2) + sqrt(pi)*8/15  # should be small
 
 z <- pi + 1i*sqrt(2)
-complex_gamma(z+1)-z*complex_gamma(z)   # should be small
+complex_gamma(z+1) - z*complex_gamma(z)   # should be small
 
 
 complex_gamma(z)*complex_gamma(1-z) - pi/sin(pi*z)  # small

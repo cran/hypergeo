@@ -1,4 +1,4 @@
-require(hypergeo)
+test_that("test suite aab", {
 
 ## Some random tests following complex ABC functionality.
 
@@ -93,7 +93,7 @@ structure(c(1.125-0.105i, -0.045+1.005i, -0.195+0.675i, 0.015-0.585i,
 -1.275-1.095i, -0.015-0.255i, 0.165-1.065i, -0.765-1.275i, 0.585-1.185i, 
 1.005+0.795i, -0.615-0.825i, -0.585+0.705i, 0.345-1.365i, 1.035-0.765i, 
 -0.255-0.585i, -1.215-1.155i, 0.825-0.105i, 0.555-1.485i, -0.675+1.215i, 
-1.365-0.195i, -0.345+1.425i), .Dim = c(100L, 4L))
+1.365-0.195i, -0.345+1.425i), dim = c(100L, 4L))
 
 
 
@@ -269,4 +269,7 @@ c(0.964064283226315+0.406653008068512i, 0.82707630709444-0.370937724712521i,
 f <- function(x){hypergeo(x[1],x[2],x[3],x[4])}
 jj_R <- apply(X,1,f)
 
-stopifnot(all(abs(jj_R - jj_SAGE) < 1e-10))  # actual accuracy is higher
+expect_true(all(abs(jj_R - jj_SAGE) < 1e-10))  # actual accuracy is higher
+
+} )
+

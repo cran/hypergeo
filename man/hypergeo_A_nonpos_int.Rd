@@ -1,16 +1,16 @@
 \name{hypergeo_A_nonpos_int}
 \alias{hypergeo_A_nonpos_int}
 \alias{hypergeo_AorB_nonpos_int}
-\title{Hypergeometric functions for integer arguments}
+\title{Hypergeometric functions for nonpositive integer arguments}
 \description{
-  Hypergeometric functions for A and/or B being integers
+  Hypergeometric functions for A and/or B being nonpositive integers
 }
 \usage{
 hypergeo_A_nonpos_int(A, B, C, z, tol = 0)
 hypergeo_AorB_nonpos_int(A, B, C, z, tol = 0)
 }
 \arguments{
-  \item{A,B,C}{Parameters for the hypergeometric function}
+  \item{A, B, C}{Parameters for the hypergeometric function}
   \item{z}{Primary complex argument}
   \item{tol}{tolerance}
 }
